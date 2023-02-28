@@ -5,6 +5,7 @@ import axios from 'axios';
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import loginImage from '../images/login.jpeg';
+import useAuth from '../hooks';
 
 const LoginCard = ({ children }) => (
   <Card className="shadow-sm">
@@ -27,6 +28,7 @@ const LoginForm = () => {
   const [authFailed, setAuthFailed] = useState(false);
   const inputRef = useRef();
   const navigate = useNavigate();
+  const auth = useAuth();
   useEffect(() => {
     inputRef.current.focus();
   }, []);
@@ -46,6 +48,7 @@ const LoginForm = () => {
       try {
         const res = await axios.post('../../api/v1/login', values);
         localStorage.setItem('userId', JSON.stringify(res.data));
+        auth.logIn();
         navigate('/');
       } catch(error) {
         formik.setSubmitting(false);
