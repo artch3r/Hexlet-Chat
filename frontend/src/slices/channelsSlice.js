@@ -1,4 +1,4 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { createSlice, createEntityAdapter, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
 const getAuthHeader = () => {
@@ -19,10 +19,12 @@ export const fetchInitialData = createAsyncThunk(
   },
 );
 
-const initialState = {
+const channelsAdapter = createEntityAdapter();
+
+const initialState = channelsAdapter.getInitialState({
   channels: [],
   currentChannelId: null,
-};
+});
 
 const channelsSlice = createSlice({
   name: 'channels',
@@ -34,5 +36,7 @@ const channelsSlice = createSlice({
     });
   },
 });
+
+// export const channelsSelectors = channelsAdapter.getSelectors((state) => state.channels);
 
 export default channelsSlice.reducer;

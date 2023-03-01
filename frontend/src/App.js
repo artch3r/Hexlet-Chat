@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import { MainPage } from './components/MainPage.jsx';
+import { MainPage } from './components/MainPage/MainPage.jsx';
 import { LoginPage } from './components/LoginPage.jsx';
 import { NotFoundPage } from './components/NotFoundPage.jsx';
 import { useState, useEffect } from 'react';
