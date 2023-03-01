@@ -2,7 +2,7 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { MainPage } from './components/MainPage.jsx';
 import { LoginPage } from './components/LoginPage.jsx';
 import { NotFoundPage } from './components/NotFoundPage.jsx';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Navbar, Container } from 'react-bootstrap';
 import AuthContext from './contexts/index.jsx';
 import useAuth from './hooks/index.jsx';
@@ -29,6 +29,14 @@ const MainRoute = ({ children }) => {
 };
 
 function App() {
+  useEffect(() => {
+    const html = document.getElementsByTagName( 'html' )[0];
+    const root = document.getElementById('root');
+    root.classList.add('h-100');
+    html.classList.add('h-100');
+    document.body.classList.add('h-100');
+  }, []);
+
   return (
     <div className="h-100">
       <div className="h-100" id="chat">
