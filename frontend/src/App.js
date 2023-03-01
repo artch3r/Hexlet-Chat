@@ -3,8 +3,10 @@ import { MainPage } from './components/MainPage.jsx';
 import { LoginPage } from './components/LoginPage.jsx';
 import { NotFoundPage } from './components/NotFoundPage.jsx';
 import { useState } from 'react';
+import { Navbar, Container } from 'react-bootstrap';
 import AuthContext from './contexts/index.jsx';
 import useAuth from './hooks/index.jsx';
+
 
 const AuthProvider = ({ children }) => {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -31,7 +33,11 @@ function App() {
     <div className="h-100">
       <div className="h-100" id="chat">
         <div className="d-flex flex-column h-100">
-          <nav className="shadow-sm navbar navbar-expand-lg navbar-light bg-white"><div className="container"><a className="navbar-brand" href="/">Hexlet Chat</a></div></nav>
+          <Navbar expand="lg" bg="white" className="shadow-sm">
+            <Container>
+              <Navbar.Brand href="/">Hexlet Chat</Navbar.Brand>
+            </Container>
+          </Navbar>
           <AuthProvider>
             <BrowserRouter>
               <Routes>
