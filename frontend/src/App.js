@@ -4,9 +4,7 @@ import { LoginPage } from './components/LoginPage.jsx';
 import { NotFoundPage } from './components/NotFoundPage.jsx';
 import { useState, useEffect } from 'react';
 import { Navbar, Container } from 'react-bootstrap';
-import AuthContext from './contexts/index.jsx';
-import useAuth from './hooks/index.jsx';
-
+import AuthContext, { useAuth } from './context/index.jsx';
 
 const AuthProvider = ({ children }) => {
   const [loggedIn, setLoggedIn] = useState(false);
