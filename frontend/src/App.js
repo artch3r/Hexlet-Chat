@@ -4,7 +4,7 @@ import { LoginPage } from './components/LoginPage/LoginPage.jsx';
 import { NotFoundPage } from './components/NotFoundPage/NotFoundPage.jsx';
 import { useState, useEffect } from 'react';
 import { Navbar, Container, Button } from 'react-bootstrap';
-import AuthContext, { useAuth } from './context/index.jsx';
+import AuthContext, { useAuth } from './contexts/AuthContext.jsx';
 
 const AuthProvider = ({ children }) => {
   const [loggedIn, setLoggedIn] = useState(localStorage.userId ? true : false);
