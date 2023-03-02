@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate, Link } from 'react-router-dom';
 import { MainPage } from './components/MainPage/MainPage.jsx';
 import { LoginPage } from './components/LoginPage.jsx';
 import { NotFoundPage } from './components/NotFoundPage.jsx';
@@ -50,13 +50,13 @@ function App() {
       <div className="h-100" id="chat">
         <div className="d-flex flex-column h-100">
           <AuthProvider>
-            <Navbar expand="lg" bg="white" className="shadow-sm">
-              <Container>
-                <Navbar.Brand href="/">Hexlet Chat</Navbar.Brand>
-                <LogOutButton />
-              </Container>
-            </Navbar>
             <BrowserRouter>
+              <Navbar expand="lg" bg="white" className="shadow-sm">
+                <Container>
+                  <Navbar.Brand as={Link} to="/">Hexlet Chat</Navbar.Brand>
+                  <LogOutButton />
+                </Container>
+              </Navbar>
               <Routes>
                 <Route 
                   path='/' 
