@@ -3,7 +3,7 @@ import { MainPage } from './MainPage/MainPage.jsx';
 import { LoginPage } from './LoginPage/LoginPage.jsx';
 import { NotFoundPage } from './NotFoundPage/NotFoundPage.jsx';
 import { Navbar, Container, Button } from 'react-bootstrap';
-import { useAuth } from '../providers/AuthProvider.jsx';
+import { useAuth } from './providers/AuthProvider.jsx';
 
 const LogOutButton = () => {
   const auth = useAuth();

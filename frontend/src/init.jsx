@@ -1,6 +1,6 @@
 import { Provider } from 'react-redux';
 import store from './slices/index.js';
-import AuthProvider from './providers/AuthProvider';
+import AuthProvider from './components/providers/AuthProvider';
 import App from './components/App.js';
 
 const init = () => (

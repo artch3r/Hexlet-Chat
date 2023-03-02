@@ -5,7 +5,7 @@ import axios from 'axios';
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import loginImage from '../../images/login.jpeg';
-import { useAuth } from '../../providers/AuthProvider.jsx';
+import { useAuth } from '../providers/AuthProvider.jsx';
 
 const LoginCard = ({ children }) => (
   <Card className="shadow-sm">
