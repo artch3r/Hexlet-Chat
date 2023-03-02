@@ -1,7 +1,7 @@
 import { BrowserRouter, Routes, Route, Navigate, Link } from 'react-router-dom';
 import { MainPage } from './components/MainPage/MainPage.jsx';
-import { LoginPage } from './components/LoginPage.jsx';
-import { NotFoundPage } from './components/NotFoundPage.jsx';
+import { LoginPage } from './components/LoginPage/LoginPage.jsx';
+import { NotFoundPage } from './components/NotFoundPage/NotFoundPage.jsx';
 import { useState, useEffect } from 'react';
 import { Navbar, Container, Button } from 'react-bootstrap';
 import AuthContext, { useAuth } from './context/index.jsx';

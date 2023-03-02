@@ -1,4 +1,4 @@
-import notFoundImage from '../images/notFound.svg';
+import notFoundImage from '../../images/notFound.svg';
 
 export const NotFoundPage = () => (
   <div className="text-center">
