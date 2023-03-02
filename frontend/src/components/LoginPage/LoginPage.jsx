@@ -1,6 +1,6 @@
 import { useFormik } from 'formik';
 import * as yup from 'yup';
-import { Card, Form } from 'react-bootstrap';
+import { Card, Form, Button, Container, Row } from 'react-bootstrap';
 import axios from 'axios';
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -15,7 +15,7 @@ const LoginCard = ({ children }) => (
       </div>
       {children}
     </Card.Body>
-    <Card.Footer>
+    <Card.Footer className="p-4">
       <div className="text-center">
         <span>Нет аккаунта?</span>
         <a href="/singup">Регистрация</a>
@@ -95,7 +95,7 @@ const LoginForm = () => {
         <Form.Label htmlFor="oassword">Пароль</Form.Label>
         <Form.Control.Feedback type="invalid">Неверные имя пользователя или пароль</Form.Control.Feedback>
       </Form.Group>
-      <button type="submit" className="w-100 mb-3 btn btn-outline-primary" value="submit">Войти</button>
+      <Button type="submit" value="submit" variant="outline-primary" className="w-100 mb-3">Войти</Button>
     </Form>
   )
   
@@ -103,14 +103,14 @@ const LoginForm = () => {
 
 export const LoginPage = () => {
   return (
-    <div className="container-fluid h-100">
-      <div className="row justify-content-center align-content-center h-100">
+    <Container fluid className="h-100">
+      <Row className="justify-content-center align-content-center h-100">
         <div className="col-12 col-md-8 col-xxl-6">
           <LoginCard>
             <LoginForm />
           </LoginCard>
         </div>
-      </div>
-    </div>
-  )
+      </Row>
+    </Container>
+  );
 };
