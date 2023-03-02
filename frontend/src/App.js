@@ -3,19 +3,29 @@ import { MainPage } from './components/MainPage/MainPage.jsx';
 import { LoginPage } from './components/LoginPage.jsx';
 import { NotFoundPage } from './components/NotFoundPage.jsx';
 import { useState, useEffect } from 'react';
-import { Navbar, Container } from 'react-bootstrap';
+import { Navbar, Container, Button } from 'react-bootstrap';
 import AuthContext, { useAuth } from './context/index.jsx';
 
 const AuthProvider = ({ children }) => {
-  const [loggedIn, setLoggedIn] = useState(false);
+  const [loggedIn, setLoggedIn] = useState(localStorage.userId ? true : false);
 
   const logIn = () => setLoggedIn(true);
+  const logOut = () => {
+    localStorage.removeItem('userId');
+    setLoggedIn(false);
+  };
 
   return (
-    <AuthContext.Provider value={{ loggedIn, logIn }}>
+    <AuthContext.Provider value={{ loggedIn, logIn, logOut }}>
       {children}
     </AuthContext.Provider>
   )
+};
+
+const LogOutButton = () => {
+  const auth = useAuth();
+
+  return auth.loggedIn ? <Button variant="primary" onClick={auth.logOut}>Выйти</Button> : null;
 };
 
 const MainRoute = ({ children }) => {
@@ -39,12 +49,13 @@ function App() {
     <div className="h-100">
       <div className="h-100" id="chat">
         <div className="d-flex flex-column h-100">
-          <Navbar expand="lg" bg="white" className="shadow-sm">
-            <Container>
-              <Navbar.Brand href="/">Hexlet Chat</Navbar.Brand>
-            </Container>
-          </Navbar>
           <AuthProvider>
+            <Navbar expand="lg" bg="white" className="shadow-sm">
+              <Container>
+                <Navbar.Brand href="/">Hexlet Chat</Navbar.Brand>
+                <LogOutButton />
+              </Container>
+            </Navbar>
             <BrowserRouter>
               <Routes>
                 <Route 
@@ -63,7 +74,6 @@ function App() {
         </div>
       </div>
     </div>
-    
   );
 }
 
