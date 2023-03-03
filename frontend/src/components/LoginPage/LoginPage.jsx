@@ -95,7 +95,7 @@ const LoginForm = () => {
         <Form.Label htmlFor="oassword">Пароль</Form.Label>
         <Form.Control.Feedback type="invalid">Неверные имя пользователя или пароль</Form.Control.Feedback>
       </Form.Group>
-      <Button type="submit" value="submit" variant="outline-primary" className="w-100 mb-3">Войти</Button>
+      <Button type="submit" value="submit" variant="outline-primary" className="w-100 mb-3" disabled={formik.isSubmitting}>Войти</Button>
     </Form>
   )
   
