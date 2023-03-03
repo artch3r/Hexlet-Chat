@@ -10,6 +10,9 @@ const initialState = messagesAdapter.getInitialState({
 const messagesSlice = createSlice({
   name: 'messages',
   initialState,
+  reducers: {
+    addMessage: messagesAdapter.addOne,
+  },
   extraReducers: (builder) => {
     builder.addCase(fetchInitialData.fulfilled, (state, { payload }) => {
       state.messages = payload.messages;
@@ -17,6 +20,8 @@ const messagesSlice = createSlice({
   },
 });
 
-// export const messagesSelectors = messagesAdapter.getSelectors((state) => state.messages);
+export const { addMessage } = messagesSlice.actions;
+
+export const messagesSelectors = messagesAdapter.getSelectors((state) => state.messages);
 
 export default messagesSlice.reducer;
