@@ -1,14 +1,16 @@
 import cn from 'classnames';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { setChannel } from '../../slices/channelsSlice';
 
 const renderChannels = (channels, currentChannelId) => channels.map((channel) => {
+  const dispatch = useDispatch();
   const buttonClasses = cn('w-100 rounded-0 text-start btn', {
     'btn-secondary': channel.id === currentChannelId,
   });
 
   return (
     <li className="nav-item w-100">
-      <button type="button" className={buttonClasses}>
+      <button type="button" className={buttonClasses} onClick={() => dispatch(setChannel(channel.id))}>
         <span class="me-1">#</span>
         {channel.name}
       </button>

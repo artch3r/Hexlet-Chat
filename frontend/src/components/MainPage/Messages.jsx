@@ -48,8 +48,6 @@ const MessageForm = ({ activeChannel }) => {
 };
 
 const Messages = () => {
-  useSelector((state) => console.log('state', state));
-
   const activeChannel = useSelector(({ channels: { channels, currentChannelId } }) => {
     const activeChannel = channels.find((channel) => channel.id === currentChannelId);
     return activeChannel;
@@ -70,7 +68,7 @@ const Messages = () => {
       <div className="d-flex flex-column h-100">
         <div className="bg-light mb-4 p-3 shadow-sm small">
           <p className="m-0"><b># {activeChannel ? activeChannel.name : 'general'}</b></p>
-          <span className="text-muted">0 сообщений</span>
+          <span className="text-muted">{`${activeChannelMessages.length} сообщений`}</span>
         </div>
         <div id="messages-box" className="chat-messages overflow-auto px-5">
           {messages.length > 0 ? messagesElements : null}
