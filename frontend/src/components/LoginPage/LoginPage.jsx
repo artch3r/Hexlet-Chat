@@ -70,7 +70,7 @@ const LoginForm = () => {
         <Form.Control
           name="username"
           autoComplete="username"
-          required=""
+          required
           placeholder="Ваш ник"
           id="username"
           type="login"
@@ -84,7 +84,7 @@ const LoginForm = () => {
         <Form.Control 
           name="password" 
           autoComplete="current-password" 
-          required="" 
+          required
           placeholder="Пароль" 
           id="password" 
           type="password"
