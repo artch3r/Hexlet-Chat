@@ -15,6 +15,7 @@ export const fetchInitialData = createAsyncThunk(
   '/api/v1/data',
   async () => {
     const { data } = await axios.get('../../api/v1/data', { headers: getAuthHeader() });
+    console.log('data', data);
     return data;
   },
 );
@@ -31,8 +32,9 @@ const channelsSlice = createSlice({
   initialState,
   extraReducers: (builder) => {
     builder.addCase(fetchInitialData.fulfilled, (state, { payload }) => {
-      state.channels = payload.channels;
-      state.currentChannelId = payload.currentChannelId;
+      const { channels, currentChannelId } = payload;
+      state.channels = channels;
+      state.currentChannelId = currentChannelId;
     });
   },
 });
