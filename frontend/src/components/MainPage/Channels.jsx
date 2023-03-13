@@ -57,7 +57,7 @@ const NewChannelForm = ({ onHide }) => {
     inputRef.current.focus();
   }, []);
 
-  const channelsNames = useSelector(({ channels }) => channels.channels).map((channel) => channel.name);
+  const channelsNames = useSelector(({ channelsInfo }) => channelsInfo.channels).map((channel) => channel.name);
   yup.setLocale({
     string: {
       min: 'От 3 до 20 символов',
@@ -137,7 +137,7 @@ const ChannelModal = (props) => {
 
 const Channels = () => {
   const [modalShow, setModalShow] = useState(false);
-  const { channels, currentChannelId } = useSelector(({ channels }) => ({ channels: channels.channels, currentChannelId: channels.currentChannelId }));
+  const { channels, currentChannelId } = useSelector(({ channelsInfo: { channels, currentChannelId } }) => ({ channels, currentChannelId }));
   const channelsElements = renderChannels(channels, currentChannelId);
 
   return (

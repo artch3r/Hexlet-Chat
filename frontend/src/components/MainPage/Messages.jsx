@@ -48,7 +48,7 @@ const MessageForm = ({ activeChannel }) => {
 };
 
 const Messages = () => {
-  const activeChannel = useSelector(({ channels: { channels, currentChannelId } }) => {
+  const activeChannel = useSelector(({ channelsInfo: { channels, currentChannelId } }) => {
     const activeChannel = channels.find((channel) => channel.id === currentChannelId);
     return activeChannel;
   });
