@@ -1,7 +1,6 @@
-import cn from 'classnames';
 import { useSelector, useDispatch } from 'react-redux';
 import { useState, useRef, useEffect } from 'react';
-import { Modal, Button, Form } from 'react-bootstrap';
+import { Modal, Button, Form, ButtonGroup, Dropdown } from 'react-bootstrap';
 import { Formik } from 'formik';
 import * as yup from 'yup';
 import { setChannel } from '../../slices/channelsSlice';
@@ -9,16 +8,60 @@ import { useSocket } from '../providers/SocketProvider';
 
 const renderChannels = (channels, currentChannelId) => channels.map((channel) => {
   const dispatch = useDispatch();
-  const buttonClasses = cn('w-100 rounded-0 text-start btn', {
-    'btn-secondary': channel.id === currentChannelId,
-  });
+  let channelElement;
+
+  switch (channel.removable) {
+    case false: {
+      const buttonVariant = channel.id === currentChannelId ? 'secondary' : 'light';
+      channelElement = (
+        <Button variant={buttonVariant} className="w-100 rounded-0 text-start" onClick={() => dispatch(setChannel(channel.id))}>
+          <span class="me-1">#</span>
+          {channel.name}
+        </Button>
+      );
+      break;
+    };
+    case true: {
+      const buttonVariant = channel.id === currentChannelId ? 'secondary' : 'light';
+      // channelElement = (
+      //   <ButtonGroup className="d-flex dropdown" role="group">
+      //     <Button className="w-100 rounded-0 text-start text-truncate" variant={buttonVariant}>
+      //       <span class="me-1">#</span>
+      //       {channel.name}
+      //     </Button>
+      //     <Button id='react-aria3238037419-2' aria-expanded="false" className="flex-grow-0 dropdown-toggle dropdown-toggle-split" data-toggle='dropdown' variant={buttonVariant}>
+      //       <span className='visually-hidden'>Управление каналом</span>
+      //     </Button>
+      //     <Dropdown.Menu x-placement="bottom-start" aria-labelledby='react-aria3238037419-2' data-popper-reference-hidden='false' data-popper-escaped='false' data-popper-placement='bottom-start'>
+      //       <Dropdown.Item>Удалить</Dropdown.Item>
+      //       <Dropdown.Item>Переименовать</Dropdown.Item>
+      //     </Dropdown.Menu>
+      //     <div x-placement="bottom-start" aria-labelledby="react-aria3238037419-2" class="dropdown-menu" data-popper-reference-hidden="false" data-popper-escaped="false" data-popper-placement="bottom-start" ><a data-rr-ui-dropdown-item="" class="dropdown-item" role="button" tabindex="0" href="#">Удалить</a><a data-rr-ui-dropdown-item="" class="dropdown-item" role="button" tabindex="0" href="#">Переименовать</a></div>
+      //   </ButtonGroup>
+      // );
+
+      channelElement = (
+        <Dropdown as={ButtonGroup} className="w-100">
+          <Button className="w-100 rounded-0 text-start text-truncate" variant={buttonVariant} onClick={() => dispatch(setChannel(channel.id))}>
+            <span class="me-1">#</span>
+            {channel.name}
+          </Button>
+          <Dropdown.Toggle split variant={buttonVariant} />
+          <Dropdown.Menu>
+            <Dropdown.Item>Удалить</Dropdown.Item>
+            <Dropdown.Item>Переименовать</Dropdown.Item>
+          </Dropdown.Menu>
+        </Dropdown>
+      )
+      break;
+    }
+    default:
+      break;
+  }
 
   return (
     <li className="nav-item w-100">
-      <button type="button" className={buttonClasses} onClick={() => dispatch(setChannel(channel.id))}>
-        <span class="me-1">#</span>
-        {channel.name}
-      </button>
+      {channelElement}
     </li>
   );
 });
