@@ -3,9 +3,7 @@ import { fetchInitialData } from './channelsSlice';
 
 const messagesAdapter = createEntityAdapter();
 
-const initialState = messagesAdapter.getInitialState({
-  messages: [],
-});
+const initialState = messagesAdapter.getInitialState();
 
 const messagesSlice = createSlice({
   name: 'messages',
