@@ -23,23 +23,6 @@ const renderChannels = (channels, currentChannelId) => channels.map((channel) =>
     };
     case true: {
       const buttonVariant = channel.id === currentChannelId ? 'secondary' : 'light';
-      // channelElement = (
-      //   <ButtonGroup className="d-flex dropdown" role="group">
-      //     <Button className="w-100 rounded-0 text-start text-truncate" variant={buttonVariant}>
-      //       <span class="me-1">#</span>
-      //       {channel.name}
-      //     </Button>
-      //     <Button id='react-aria3238037419-2' aria-expanded="false" className="flex-grow-0 dropdown-toggle dropdown-toggle-split" data-toggle='dropdown' variant={buttonVariant}>
-      //       <span className='visually-hidden'>Управление каналом</span>
-      //     </Button>
-      //     <Dropdown.Menu x-placement="bottom-start" aria-labelledby='react-aria3238037419-2' data-popper-reference-hidden='false' data-popper-escaped='false' data-popper-placement='bottom-start'>
-      //       <Dropdown.Item>Удалить</Dropdown.Item>
-      //       <Dropdown.Item>Переименовать</Dropdown.Item>
-      //     </Dropdown.Menu>
-      //     <div x-placement="bottom-start" aria-labelledby="react-aria3238037419-2" class="dropdown-menu" data-popper-reference-hidden="false" data-popper-escaped="false" data-popper-placement="bottom-start" ><a data-rr-ui-dropdown-item="" class="dropdown-item" role="button" tabindex="0" href="#">Удалить</a><a data-rr-ui-dropdown-item="" class="dropdown-item" role="button" tabindex="0" href="#">Переименовать</a></div>
-      //   </ButtonGroup>
-      // );
-
       channelElement = (
         <Dropdown as={ButtonGroup} className="w-100">
           <Button className="w-100 rounded-0 text-start text-truncate" variant={buttonVariant} onClick={() => dispatch(setChannel(channel.id))}>
@@ -76,13 +59,17 @@ const NewChannelForm = ({ onHide }) => {
 
   const channelsNames = useSelector(({ channels }) => channels.channels).map((channel) => channel.name);
   yup.setLocale({
+    string: {
+      min: 'От 3 до 20 символов',
+      max: 'От 3 до 20 символов',
+    },
     mixed: {
       required: 'Обязательное поле',
       notOneOf: 'Должно быть уникальным',
     },
   });
   const validationSchema = yup.object().shape({
-    name: yup.string().required().notOneOf(channelsNames),
+    name: yup.string().required().min(3).max(20).notOneOf(channelsNames),
   });
 
   return (
