@@ -2,7 +2,7 @@ import { createContext } from 'react';
 import { useContext } from 'react';
 import { useDispatch } from 'react-redux';
 import { addMessage } from '../../slices/messagesSlice';
-import { addChannel, setChannel } from '../../slices/channelsSlice';
+import { addChannel, setChannel, deleteChannel } from '../../slices/channelsSlice';
 
 const SocketContext = createContext();
 const SocketProvider = ({ children, socket }) => {
@@ -17,6 +17,11 @@ const SocketProvider = ({ children, socket }) => {
     dispatch(setChannel(channel.id));
   });
 
+  socket.on('removeChannel', ({ id }) => {
+    dispatch(deleteChannel(id));
+    dispatch(setChannel(1));
+  });
+
   const sendMessage = (message, checkResponse) => {
    socket.emit('newMessage', message, (response) => {
       checkResponse(response);
@@ -29,8 +34,14 @@ const SocketProvider = ({ children, socket }) => {
     });
   };
 
+  const removeChannel = (channelId, checkResponse) => {
+    socket.emit('removeChannel', channelId, (response) => {
+      checkResponse(response);
+    });
+  };
+
   return (
-    <SocketContext.Provider value={{ sendMessage, createChannel }}>
+    <SocketContext.Provider value={{ sendMessage, createChannel, removeChannel }}>
       {children}
     </SocketContext.Provider>
   );

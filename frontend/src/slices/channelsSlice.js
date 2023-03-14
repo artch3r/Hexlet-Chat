@@ -19,13 +19,6 @@ export const fetchInitialData = createAsyncThunk(
   },
 );
 
-// const channelsAdapter = createEntityAdapter();
-
-// const initialState = channelsAdapter.getInitialState({
-//   channels: [],
-//   currentChannelId: null,
-// });
-
 const initialState = {
   channels: [],
   currentChannelId: null,
@@ -40,7 +33,11 @@ const channelsSlice = createSlice({
     },
     addChannel(state, { payload }) {
       state.channels.push(payload);
-    }
+    },
+    deleteChannel(state, { payload }) {
+      const newChannels = state.channels.filter((channel) => channel.id !== payload);
+      state.channels = newChannels;
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(fetchInitialData.fulfilled, (state, { payload }) => {
@@ -51,8 +48,6 @@ const channelsSlice = createSlice({
   },
 });
 
-export const { setChannel, addChannel } = channelsSlice.actions;
-
-// export const channelsSelectors = channelsAdapter.getSelectors((state) => state.channels);
+export const { setChannel, addChannel, deleteChannel } = channelsSlice.actions;
 
 export default channelsSlice.reducer;

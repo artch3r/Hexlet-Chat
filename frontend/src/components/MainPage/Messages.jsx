@@ -3,7 +3,6 @@ import { Col, Form, Button } from 'react-bootstrap';
 import { useFormik } from 'formik';
 import { useState, useRef, useEffect } from 'react';
 import { useSocket } from "../providers/SocketProvider.jsx";
-import { messagesSelectors } from "../../slices/messagesSlice.js";
 
 const MessageForm = ({ activeChannel }) => {
   const [error, setError] = useState(null);
@@ -58,7 +57,7 @@ const Messages = () => {
     return activeChannel;
   });
 
-  const messages = useSelector(messagesSelectors.selectAll);
+  const messages = useSelector(({ messagesInfo }) => messagesInfo.messages);
   const activeChannelMessages = messages.filter((message) => message.channelId === activeChannel.id);
   const messagesElements = activeChannelMessages.map((message) => (
     <div>

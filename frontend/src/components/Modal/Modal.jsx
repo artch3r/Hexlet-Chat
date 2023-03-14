@@ -6,8 +6,7 @@ import { Form, Button, Modal } from 'react-bootstrap';
 import { closeModal } from "../../slices/modalSlice";
 import { useSocket } from '../providers/SocketProvider';
 
-const ChannelForm = () => {
-  const dispatch = useDispatch();
+const ChannelForm = ({ onHide }) => {
   const [error, setError] = useState(null);
   const { createChannel } = useSocket();
   const inputRef = useRef();
@@ -37,9 +36,10 @@ const ChannelForm = () => {
     }}
     validationSchema={validationSchema}
     onSubmit={({ name }, { setSubmitting }) => {
+      setError(null);
       createChannel({ name }, (response) => {
         if (response.status === 'ok') {
-          dispatch(closeModal());
+          onHide();
         } else {
           setError('Ошибка сети');
         }
@@ -63,7 +63,7 @@ const ChannelForm = () => {
               <Form.Label htmlFor="name" className="visually-hidden">Имя канала</Form.Label>
               <Form.Control.Feedback type="invalid">{error}</Form.Control.Feedback>
               <div className="d-flex justify-content-end">
-                <Button type="button" variant="secondary" className="me-2" onClick={() => dispatch(closeModal())}>Отменить</Button>
+                <Button type="button" variant="secondary" className="me-2" onClick={onHide}>Отменить</Button>
                 <Button type="submit" variant="primary" disabled={isSubmitting}>Отправить</Button>
               </div>
             </Form.Group>
@@ -71,6 +71,36 @@ const ChannelForm = () => {
         )
       }}
     </Formik>
+  );
+};
+
+const DeleteConfirmation = ({ onHide, extra }) => {
+  const [disabled, setDisabled] = useState(false);
+  const [error, setError] = useState(null);
+  const { removeChannel } = useSocket();
+
+  return (
+    <>
+      <p className="lead">Уверены?</p>
+      <div className="d-flex justify-content-end">
+        <Button className="me-2" variant="secondary" disabled={disabled} onClick={onHide}>Отменить</Button>
+        <Button className="me-2" variant="danger" disabled={disabled} onClick={() => {
+          setDisabled(true);
+          setError(null);
+
+          removeChannel({ id: extra.channelId }, (response) => {
+            if (response.status === 'ok') {
+              setDisabled(false);
+              onHide();
+            } else {
+              setError('Ошибка сети');
+              setDisabled(false);
+            }
+          })
+        }}>Удалить</Button>
+      </div>
+      {error && <div className="invalid-tooltip">{error}</div>}
+    </>
   );
 };
 
@@ -82,14 +112,24 @@ const ModalForm = () => {
     addChannel: 'Добавить канал',
     renameChannel: 'Переименовать канал',
     deleteChannel: 'Удалить канал',
+    null: null,
   };
 
-  const body = type === 'deleteChannel' ? <p className="lead">Уверены?</p> : <ChannelForm type={type} extra={extra} />;
+  const modalBodyScheme = {
+    addChannel: ChannelForm,
+    renameChannel: ChannelForm,
+    deleteChannel: DeleteConfirmation,
+    null: null,
+  };
+
+  const Body = modalBodyScheme[type];
+
+  const onHide = () => dispatch(closeModal());
 
   return (
     <Modal
       show={isOpened}
-      onHide={() => dispatch(closeModal())}
+      onHide={onHide}
       centered
     >
       <Modal.Header closeButton>
@@ -98,7 +138,7 @@ const ModalForm = () => {
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        {body}
+        {Body && <Body type={type} extra={extra} onHide={onHide} />}
       </Modal.Body>
     </Modal>
   );
