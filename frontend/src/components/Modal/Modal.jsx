@@ -99,7 +99,7 @@ const ChannelForm = ({ onHide, type, extra }) => {
               </div>
             </Form.Group>
           </Form>
-        )
+        );
       }}
     </Formik>
   );
