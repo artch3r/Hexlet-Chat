@@ -38,6 +38,12 @@ const channelsSlice = createSlice({
       const newChannels = state.channels.filter((channel) => channel.id !== payload);
       state.channels = newChannels;
     },
+    changeChannelName(state, { payload }) {
+      const currentChannels = state.channels;
+      const filteredChannels = currentChannels.filter((channel) => channel.id !== payload.id);
+      const newChannels = [...filteredChannels, payload];
+      state.channels = newChannels;
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(fetchInitialData.fulfilled, (state, { payload }) => {
@@ -48,6 +54,6 @@ const channelsSlice = createSlice({
   },
 });
 
-export const { setChannel, addChannel, deleteChannel } = channelsSlice.actions;
+export const { setChannel, addChannel, deleteChannel, changeChannelName } = channelsSlice.actions;
 
 export default channelsSlice.reducer;

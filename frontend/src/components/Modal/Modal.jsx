@@ -6,15 +6,54 @@ import { Form, Button, Modal } from 'react-bootstrap';
 import { closeModal } from "../../slices/modalSlice";
 import { useSocket } from '../providers/SocketProvider';
 
-const ChannelForm = ({ onHide }) => {
+const handleFormSubmit = (type, onHide, setError, createChannel, renameChannel, currentChannel) => ({ name }, { setSubmitting }) => {
+  switch (type) {
+    case 'addChannel': {
+      setError(null);
+      createChannel(name, (response) => {
+        if (response.status === 'ok') {
+          onHide();
+        } else {
+          setError('Ошибка сети');
+        }
+      });
+    
+      setSubmitting(false);
+      break;
+    }
+
+    case 'renameChannel': {
+      renameChannel(currentChannel.id, name, (response) => {
+        if (response.status === 'ok') {
+          onHide();
+        } else {
+          setError('Ошибка сети');
+        }
+      });
+
+      setSubmitting(false);
+      break;
+    }
+    
+    default:
+      break;
+  }
+};
+
+const ChannelForm = ({ onHide, type, extra }) => {
   const [error, setError] = useState(null);
-  const { createChannel } = useSocket();
+  const { createChannel, renameChannel } = useSocket();
   const inputRef = useRef();
   useEffect(() => {
-    inputRef.current.focus();
-  }, []);
+    inputRef.current.select();
+  });
 
-  const channelsNames = useSelector(({ channelsInfo }) => channelsInfo.channels).map((channel) => channel.name);
+  const channels = useSelector(({ channelsInfo }) => channelsInfo.channels);
+  const channelsNames = channels.map((channel) => channel.name);
+  const currentChannel = type === 'renameChannel'
+    ? channels.find((channel) => channel.id === extra.channelId)
+    : null;
+
   yup.setLocale({
     string: {
       min: 'От 3 до 20 символов',
@@ -26,40 +65,32 @@ const ChannelForm = ({ onHide }) => {
     },
   });
   const validationSchema = yup.object().shape({
-    name: yup.string().required().min(3).max(20).notOneOf(channelsNames),
+    name: yup.string().required().trim().lowercase().min(3).max(20).notOneOf(channelsNames),
   });
 
   return (
     <Formik
     initialValues={{
-      name: '',
+      name: currentChannel ? currentChannel.name : '',
     }}
     validationSchema={validationSchema}
-    onSubmit={({ name }, { setSubmitting }) => {
-      setError(null);
-      createChannel({ name }, (response) => {
-        if (response.status === 'ok') {
-          onHide();
-        } else {
-          setError('Ошибка сети');
-        }
-      });
-
-      setSubmitting(false);
-    }}
+    onSubmit={handleFormSubmit(type, onHide, setError, createChannel, renameChannel, currentChannel)}
     >
-      {({ errors, handleChange, handleSubmit, isSubmitting }) => {
+      {({ values, errors, handleChange, handleSubmit, isSubmitting }) => {
         if (isSubmitting && errors.name) {
           setError(errors.name);
         }
         if (isSubmitting && !errors.name) {
           setError(null);
         }
+        if (type === 'renameChannel' && values.name === currentChannel.name && isSubmitting) {
+          onHide();
+        }
 
         return (
           <Form onSubmit={handleSubmit}>
             <Form.Group>
-              <Form.Control name="name" id="name" className="mb-2" ref={inputRef} onChange={handleChange} isInvalid={!!error} />
+              <Form.Control name="name" id="name" className="mb-2" ref={inputRef} value={values.name} onChange={handleChange} isInvalid={!!error} />
               <Form.Label htmlFor="name" className="visually-hidden">Имя канала</Form.Label>
               <Form.Control.Feedback type="invalid">{error}</Form.Control.Feedback>
               <div className="d-flex justify-content-end">
@@ -88,7 +119,7 @@ const DeleteConfirmation = ({ onHide, extra }) => {
           setDisabled(true);
           setError(null);
 
-          removeChannel({ id: extra.channelId }, (response) => {
+          removeChannel(extra.channelId, (response) => {
             if (response.status === 'ok') {
               setDisabled(false);
               onHide();
