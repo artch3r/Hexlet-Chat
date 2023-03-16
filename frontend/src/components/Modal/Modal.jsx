@@ -4,34 +4,36 @@ import { Formik } from 'formik';
 import * as yup from 'yup';
 import { Form, Button, Modal } from 'react-bootstrap';
 import { closeModal } from "../../slices/modalSlice";
-import { useSocket } from '../providers/SocketProvider';
+import { useChatApi } from '../providers/SocketProvider';
 
-const handleFormSubmit = (type, onHide, setError, createChannel, renameChannel, currentChannel) => ({ name }, { setSubmitting }) => {
+const handleFormSubmit = (type, onHide, setError, currentChannel, chatApi) => ({ name }, { setSubmitting }) => {
   switch (type) {
     case 'addChannel': {
       setError(null);
-      createChannel(name, (response) => {
-        if (response.status === 'ok') {
+      const channel = { name };
+      chatApi.createChannel(channel)
+        .then(() => {
           onHide();
-        } else {
+          setSubmitting(false);
+        })
+        .catch(() => {
           setError('Ошибка сети');
-        }
-      });
-    
-      setSubmitting(false);
+          setSubmitting(false);
+        });
       break;
     }
 
     case 'renameChannel': {
-      renameChannel(currentChannel.id, name, (response) => {
-        if (response.status === 'ok') {
+      setError(null);
+      chatApi.renameChannel(currentChannel.id, name)
+        .then(() => {
           onHide();
-        } else {
+          setSubmitting(false);
+        })
+        .catch(() => {
           setError('Ошибка сети');
-        }
-      });
-
-      setSubmitting(false);
+          setSubmitting(false);
+        });
       break;
     }
     
@@ -54,7 +56,7 @@ const checkErrors = (errors, isSubmitting, setError, onHide, type, values, curre
 
 const ChannelForm = ({ onHide, type, extra }) => {
   const [error, setError] = useState(null);
-  const { createChannel, renameChannel } = useSocket();
+  const { chatApi } = useChatApi();
   const inputRef = useRef();
   useEffect(() => {
     inputRef.current.select();
@@ -86,7 +88,7 @@ const ChannelForm = ({ onHide, type, extra }) => {
       name: currentChannel ? currentChannel.name : '',
     }}
     validationSchema={validationSchema}
-    onSubmit={handleFormSubmit(type, onHide, setError, createChannel, renameChannel, currentChannel)}
+    onSubmit={handleFormSubmit(type, onHide, setError, currentChannel, chatApi)}
     >
       {({ values, errors, handleChange, handleSubmit, isSubmitting }) => {
         checkErrors(errors, isSubmitting, setError, onHide, type, values, currentChannel);
@@ -112,7 +114,7 @@ const ChannelForm = ({ onHide, type, extra }) => {
 const DeleteConfirmation = ({ onHide, extra }) => {
   const [disabled, setDisabled] = useState(false);
   const [error, setError] = useState(null);
-  const { removeChannel } = useSocket();
+  const { chatApi } = useChatApi();
 
   return (
     <>
@@ -122,16 +124,15 @@ const DeleteConfirmation = ({ onHide, extra }) => {
         <Button className="me-2" variant="danger" disabled={disabled} onClick={() => {
           setDisabled(true);
           setError(null);
-
-          removeChannel(extra.channelId, (response) => {
-            if (response.status === 'ok') {
+          chatApi.removeChannel(extra.channelId)
+            .then(() => {
               setDisabled(false);
               onHide();
-            } else {
+            })
+            .catch(() => {
               setError('Ошибка сети');
               setDisabled(false);
-            }
-          })
+            });
         }}>Удалить</Button>
       </div>
       {error && <div className="invalid-tooltip">{error}</div>}

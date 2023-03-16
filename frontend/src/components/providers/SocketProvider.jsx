@@ -24,37 +24,29 @@ const SocketProvider = ({ children, socket }) => {
     dispatch(changeChannelName(channel));
   });
 
-  const sendMessage = (message, checkResponse) => {
-   socket.emit('newMessage', message, (response) => {
-      checkResponse(response);
+  const createSocketMessage = (event, data) => new Promise((resolve, reject) => {
+    socket.timeout(5000).volatile.emit(event, data, (err) => {
+      if (err) {
+        reject(err);
+      }
+      resolve();
     });
-  };
+  });
 
-  const createChannel = (name, checkResponse) => {
-    socket.emit('newChannel', { name }, (response) => {
-      checkResponse(response);
-    });
-  };
-
-  const removeChannel = (channelId, checkResponse) => {
-    socket.emit('removeChannel', { id: channelId }, (response) => {
-      checkResponse(response);
-    });
-  };
-
-  const renameChannel = (channelId, name, checkResponse) => {
-    socket.emit('renameChannel', { id: channelId, name }, (response) => {
-      checkResponse(response);
-    });
+  const chatApi = {
+    sendMessage: (message) => createSocketMessage('newMessage', message),
+    createChannel: (channel) => createSocketMessage('newChannel', channel),
+    removeChannel: (id) => createSocketMessage('removeChannel', { id }),
+    renameChannel: (id, name) => createSocketMessage('renameChannel', { id, name }),
   };
 
   return (
-    <SocketContext.Provider value={{ sendMessage, createChannel, removeChannel, renameChannel }}>
+    <SocketContext.Provider value={{ chatApi }}>
       {children}
     </SocketContext.Provider>
   );
 };
 
-export const useSocket = () => useContext(SocketContext);
+export const useChatApi = () => useContext(SocketContext);
 
 export default SocketProvider;
