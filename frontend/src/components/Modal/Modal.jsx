@@ -40,6 +40,18 @@ const handleFormSubmit = (type, onHide, setError, createChannel, renameChannel, 
   }
 };
 
+const checkErrors = (errors, isSubmitting, setError, onHide, type, values, currentChannel) => {
+  if (isSubmitting && errors.name) {
+    setError(errors.name);
+  }
+  if (isSubmitting && !errors.name) {
+    setError(null);
+  }
+  if (type === 'renameChannel' && values.name === currentChannel.name && isSubmitting) {
+    onHide();
+  }
+}
+
 const ChannelForm = ({ onHide, type, extra }) => {
   const [error, setError] = useState(null);
   const { createChannel, renameChannel } = useSocket();
@@ -77,15 +89,7 @@ const ChannelForm = ({ onHide, type, extra }) => {
     onSubmit={handleFormSubmit(type, onHide, setError, createChannel, renameChannel, currentChannel)}
     >
       {({ values, errors, handleChange, handleSubmit, isSubmitting }) => {
-        if (isSubmitting && errors.name) {
-          setError(errors.name);
-        }
-        if (isSubmitting && !errors.name) {
-          setError(null);
-        }
-        if (type === 'renameChannel' && values.name === currentChannel.name && isSubmitting) {
-          onHide();
-        }
+        checkErrors(errors, isSubmitting, setError, onHide, type, values, currentChannel);
 
         return (
           <Form onSubmit={handleSubmit}>
