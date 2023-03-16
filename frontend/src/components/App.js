@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route, Navigate, Link } from 'react-router-dom';
 import { MainPage } from './MainPage/MainPage.jsx';
 import { LoginPage } from './LoginPage/LoginPage.jsx';
 import { NotFoundPage } from './NotFoundPage/NotFoundPage.jsx';
+import SignUpPage from './SignUpPage/SignUpPage.jsx';
 import { Navbar, Container, Button } from 'react-bootstrap';
 import { useAuth } from './providers/AuthProvider.jsx';
 
@@ -16,6 +17,14 @@ const MainRoute = ({ children }) => {
 
   return (
     auth.loggedIn ? children : <Navigate to="/login" />
+  );
+};
+
+const SignUpRoute = ({ children }) => {
+  const auth = useAuth();
+
+  return (
+    auth.loggedIn ? <Navigate to="/" /> : children
   );
 };
 
@@ -37,6 +46,14 @@ const App = () => (
                 <MainRoute>
                   <MainPage />
                 </MainRoute>
+              )} 
+            />
+            <Route 
+              path='signup' 
+              element={(
+                <SignUpRoute>
+                  <SignUpPage />
+                </SignUpRoute>
               )} 
             />
             <Route path='login' element={<LoginPage />} />
