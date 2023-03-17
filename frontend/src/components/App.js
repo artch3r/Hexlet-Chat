@@ -6,6 +6,7 @@ import { NotFoundPage } from './NotFoundPage/NotFoundPage.jsx';
 import SignUpPage from './SignUpPage/SignUpPage.jsx';
 import { Navbar, Container, Button } from 'react-bootstrap';
 import { useAuth } from './providers/AuthProvider.jsx';
+import routes from '../routes.js';
 
 const LogOutButton = () => {
   const { t } = useTranslation();
@@ -18,7 +19,7 @@ const MainRoute = () => {
   const auth = useAuth();
 
   return (
-    auth.loggedIn ? <Outlet /> : <Navigate to="/login" />
+    auth.loggedIn ? <Outlet /> : <Navigate to={routes.loginPage()} />
   );
 };
 
@@ -26,7 +27,7 @@ const LoginRoute = () => {
   const auth = useAuth();
 
   return (
-    auth.loggedIn ? <Navigate to='/' /> : <Outlet />
+    auth.loggedIn ? <Navigate to={routes.mainPage()} /> : <Outlet />
   );
 };
 
@@ -34,7 +35,7 @@ const SignUpRoute = () => {
   const auth = useAuth();
 
   return (
-    auth.loggedIn ? <Navigate to="/" /> : <Outlet />
+    auth.loggedIn ? <Navigate to={routes.mainPage()} /> : <Outlet />
   );
 };
 
@@ -48,21 +49,21 @@ const App = () => {
           <BrowserRouter>
             <Navbar expand="lg" bg="white" className="shadow-sm">
               <Container>
-                <Navbar.Brand as={Link} to="/">{t('navbar.hexletChat')}</Navbar.Brand>
+                <Navbar.Brand as={Link} to={routes.mainPage()}>{t('navbar.hexletChat')}</Navbar.Brand>
                 <LogOutButton />
               </Container>
             </Navbar>
             <Routes>
               <Route element={<MainRoute />}>
-                <Route path='/' element={<MainPage />} />
+                <Route path={routes.mainPage()} element={<MainPage />} />
               </Route>
               <Route element={<LoginRoute />}>
-                <Route path='login' element={<LoginPage />} />
+                <Route path={routes.loginPage()} element={<LoginPage />} />
               </Route>
               <Route element={<SignUpRoute />}>
-                <Route path='signup' element={<SignUpPage />} />
+                <Route path={routes.signUpPage()} element={<SignUpPage />} />
               </Route>
-              <Route path='*' element={<NotFoundPage />} />
+              <Route path={routes.notFoundPage()} element={<NotFoundPage />} />
             </Routes>
           </BrowserRouter>
         </div>

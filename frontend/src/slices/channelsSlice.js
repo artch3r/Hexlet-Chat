@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
+import routes from '../routes';
 
 const getAuthHeader = () => {
   const userId = JSON.parse(localStorage.getItem('userId'));
@@ -14,7 +15,7 @@ const getAuthHeader = () => {
 export const fetchInitialData = createAsyncThunk(
   '/api/v1/data',
   async () => {
-    const { data } = await axios.get('../../api/v1/data', { headers: getAuthHeader() });
+    const { data } = await axios.get(routes.apiGetData(), { headers: getAuthHeader() });
     return data;
   },
 );

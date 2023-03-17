@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import { useTranslation } from "react-i18next";
 import loginImage from '../../images/login.jpeg';
 import { useAuth } from '../providers/AuthProvider.jsx';
+import routes from '../../routes';
 
 const LoginCard = ({ children }) => {
   const { t } = useTranslation();
@@ -22,7 +23,7 @@ const LoginCard = ({ children }) => {
       <Card.Footer className="p-4">
         <div className="text-center">
           <span>{t('loginPage.noAccount')} </span>
-          <a href="/signup">{t('loginPage.registration')}</a>
+          <a href={routes.signUpPage()}>{t('loginPage.registration')}</a>
         </div>
       </Card.Footer>
     </Card>
@@ -52,10 +53,10 @@ const LoginForm = () => {
       setAuthFailed(false);
 
       try {
-        const res = await axios.post('../../api/v1/login', values);
+        const res = await axios.post(routes.apiLogin(), values);
         localStorage.setItem('userId', JSON.stringify(res.data));
         auth.logIn();
-        navigate('/');
+        navigate(routes.mainPage());
       } catch(error) {
         formik.setSubmitting(false);
         if (error.isAxiosError && error.response.status === 401) {

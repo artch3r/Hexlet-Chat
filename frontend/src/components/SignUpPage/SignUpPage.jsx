@@ -8,6 +8,7 @@ import { useNavigate } from 'react-router-dom';
 import { useTranslation } from "react-i18next";
 import { useAuth } from "../providers/AuthProvider";
 import signUpImage from '../../images/signUp.jpg';
+import routes from "../../routes";
 
 const checkErrors = (errors, isSubmitting, updateSignUpErrors) => {
   console.log('errors', errors);
@@ -107,10 +108,10 @@ const SignUpForm = () => {
       });
 
       try {
-        const res = await axios.post('../../api/v1/signup', values);
+        const res = await axios.post(routes.apiSignUp(), values);
         localStorage.setItem('userId', JSON.stringify(res.data));
         auth.logIn();
-        navigate('/');
+        navigate(routes.mainPage());
       } catch (error) {
         if (error.isAxiosError && error.response.status === 409) {
           updateSignUpErrors((state) => {
