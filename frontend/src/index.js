@@ -4,6 +4,11 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { io } from 'socket.io-client';
 import init from './init.jsx';
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
-const socket = io();
-root.render(init(socket));
+const app = async () => {
+  const root = ReactDOM.createRoot(document.getElementById('root'));
+  const socket = io();
+  root.render(await init(socket));
+};
+
+app();
+

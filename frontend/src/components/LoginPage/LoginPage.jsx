@@ -4,27 +4,33 @@ import { Card, Form, Button, Container, Row } from 'react-bootstrap';
 import axios from 'axios';
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from "react-i18next";
 import loginImage from '../../images/login.jpeg';
 import { useAuth } from '../providers/AuthProvider.jsx';
 
-const LoginCard = ({ children }) => (
-  <Card className="shadow-sm">
-    <Card.Body className="row p-5">
-      <div className="col-12 col-md-6 d-flex align-items-center justify-content-center">
-        <img src={loginImage} className="rounded-circle" alt="Войти" />
-      </div>
-      {children}
-    </Card.Body>
-    <Card.Footer className="p-4">
-      <div className="text-center">
-        <span>Нет аккаунта? </span>
-        <a href="/signup">Регистрация</a>
-      </div>
-    </Card.Footer>
-  </Card>
-);
+const LoginCard = ({ children }) => {
+  const { t } = useTranslation();
+
+  return (
+    <Card className="shadow-sm">
+      <Card.Body className="row p-5">
+        <div className="col-12 col-md-6 d-flex align-items-center justify-content-center">
+          <img src={loginImage} className="rounded-circle" alt={t('loginPage.enter')} />
+        </div>
+        {children}
+      </Card.Body>
+      <Card.Footer className="p-4">
+        <div className="text-center">
+          <span>{t('loginPage.noAccount')} </span>
+          <a href="/signup">{t('loginPage.registration')}</a>
+        </div>
+      </Card.Footer>
+    </Card>
+  );
+};
 
 const LoginForm = () => {
+  const { t } = useTranslation();
   const [authFailed, setAuthFailed] = useState(false);
   const inputRef = useRef();
   const navigate = useNavigate();
@@ -65,37 +71,37 @@ const LoginForm = () => {
 
   return (
     <Form className="col-12 col-md-6 mt-3 mt-mb-0" onSubmit={formik.handleSubmit}>
-      <h1 className="text-center mb-4">Войти</h1>
+      <h1 className="text-center mb-4">{t('loginPage.enter')}</h1>
       <Form.Group className="form-floating mb-3">
         <Form.Control
           name="username"
           autoComplete="username"
           required
-          placeholder="Ваш ник"
+          placeholder={t('loginPage.nickname')}
           id="username"
           type="login"
           isInvalid={authFailed}
           ref={inputRef}
           onChange={formik.handleChange} 
           value={formik.values.username} />
-        <Form.Label htmlFor="username">Ваш ник</Form.Label>
+        <Form.Label htmlFor="username">{t('loginPage.nickname')}</Form.Label>
       </Form.Group>
       <Form.Group className="form-floating mb-4">
         <Form.Control 
           name="password" 
           autoComplete="current-password" 
           required
-          placeholder="Пароль" 
+          placeholder={t('loginPage.password')} 
           id="password" 
           type="password"
           isInvalid={authFailed}
           onChange={formik.handleChange}
           value={formik.values.password}
         />
-        <Form.Label htmlFor="oassword">Пароль</Form.Label>
-        <Form.Control.Feedback type="invalid">Неверные имя пользователя или пароль</Form.Control.Feedback>
+        <Form.Label htmlFor="password">{t('loginPage.password')}</Form.Label>
+        <Form.Control.Feedback type="invalid">{t('loginPage.incorrectData')}</Form.Control.Feedback>
       </Form.Group>
-      <Button type="submit" value="submit" variant="outline-primary" className="w-100 mb-3" disabled={formik.isSubmitting}>Войти</Button>
+      <Button type="submit" value="submit" variant="outline-primary" className="w-100 mb-3" disabled={formik.isSubmitting}>{t('loginPage.enter')}</Button>
     </Form>
   )
   

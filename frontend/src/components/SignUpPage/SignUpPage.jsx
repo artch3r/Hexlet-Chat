@@ -5,10 +5,12 @@ import { Formik } from "formik";
 import * as yup from 'yup';
 import axios from "axios";
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from "react-i18next";
 import { useAuth } from "../providers/AuthProvider";
 import signUpImage from '../../images/signUp.jpg';
 
 const checkErrors = (errors, isSubmitting, updateSignUpErrors) => {
+  console.log('errors', errors);
   if (isSubmitting) {
     if (errors.username) {
       updateSignUpErrors((state) => {
@@ -42,18 +44,23 @@ const checkErrors = (errors, isSubmitting, updateSignUpErrors) => {
   }
 };
 
-const SignUpCard = ({ children }) => (
-  <Card className="shadow-sm">
-    <Card.Body className="d-flex flex-column flex-md-row justify-content-around align-items-center p-5">
-      <div>
-        <img src={signUpImage} className="rounded-circle" alt="Регистрация" />
-      </div>
-      {children}
-    </Card.Body>
-  </Card>
-);
+const SignUpCard = ({ children }) => {
+  const { t } = useTranslation();
+
+  return (
+    <Card className="shadow-sm">
+      <Card.Body className="d-flex flex-column flex-md-row justify-content-around align-items-center p-5">
+        <div>
+          <img src={signUpImage} className="rounded-circle" alt={t('signUpPage.registration')} />
+        </div>
+        {children}
+      </Card.Body>
+    </Card>
+  );
+}
 
 const SignUpForm = () => {
+  const { t } = useTranslation();
   const [signUpErrors, updateSignUpErrors] = useImmer({ username: null, password: null, confirmPassword: null, alreadyExist: null });
   const inputRef = useRef();
   const auth = useAuth();
@@ -65,12 +72,18 @@ const SignUpForm = () => {
 
   yup.setLocale({
     string: {
-      min: 'От 3 до 20 символов',
-      max: 'От 3 до 20 символов',
+      min: ({ min }) => {
+        if (min === 3) {
+          return 'incorrectUsernameLength';
+        } else if (min === 6) {
+          return 'incorrectPasswordLength';
+        }
+      },
+      max: 'incorrectMaxLength',
     },
     mixed: {
-      required: 'Обязательное поле',
-      oneOf: 'Пароли должны совпадать',
+      required: 'requiredField',
+      oneOf: 'shouldConfirm',
     },
   });
 
@@ -101,7 +114,7 @@ const SignUpForm = () => {
       } catch (error) {
         if (error.isAxiosError && error.response.status === 409) {
           updateSignUpErrors((state) => {
-            state.alreadyExist = 'Такой пользователь уже существует';
+            state.alreadyExist = 'alreadyExist';
           });
 
           inputRef.current.select();
@@ -115,26 +128,26 @@ const SignUpForm = () => {
 
         return (
           <Form className="col-12 col-md-6 mt-3 mt-mb-0" onSubmit={handleSubmit}>
-            <h1 className="text-center mb-4">Регистрация</h1>
+            <h1 className="text-center mb-4">{t('signUpPage.registration')}</h1>
             <Form.Group className="form-floating mb-3">
               <Form.Control
                 name="username"
                 autoComplete="username"
-                placeholder="От 3 до 20 символов"
+                placeholder={t('signUpPage.incorrectUsernameLength')}
                 id="username"
                 type="login"
                 isInvalid={!!signUpErrors.username || !!signUpErrors.alreadyExist}
                 ref={inputRef}
                 onChange={handleChange} 
                 value={values.username} />
-              <Form.Label htmlFor="username">Имя пользователя</Form.Label>
-              <Form.Control.Feedback type="invalid">{signUpErrors.username}</Form.Control.Feedback>
+              <Form.Label htmlFor="username">{t('signUpPage.username')}</Form.Label>
+              <Form.Control.Feedback type="invalid">{signUpErrors.username && t(`errors.${signUpErrors.username}`)}</Form.Control.Feedback>
             </Form.Group>
             <Form.Group className="form-floating mb-3">
               <Form.Control 
                 name="password" 
                 autoComplete="new-password" 
-                placeholder="Не менее 6 символов" 
+                placeholder={t('signUpPage.incorrectPasswordLength')} 
                 id="password" 
                 type="password"
                 aria-describedby='passwordHelpBlock'
@@ -142,24 +155,24 @@ const SignUpForm = () => {
                 onChange={handleChange}
                 value={values.password}
               />
-              <Form.Label htmlFor="password">Пароль</Form.Label>
-              <Form.Control.Feedback type="invalid">{signUpErrors.password}</Form.Control.Feedback>
+              <Form.Label htmlFor="password">{t('signUpPage.password')}</Form.Label>
+              <Form.Control.Feedback type="invalid">{signUpErrors.password && t(`errors.${signUpErrors.password}`)}</Form.Control.Feedback>
             </Form.Group>
             <Form.Group className="form-floating mb-4">
               <Form.Control 
                 name="confirmPassword" 
                 autoComplete="new-password" 
-                placeholder="Пароли должны совпадать" 
+                placeholder={t('signUpPage.shouldConfirm')} 
                 id="confirmPassword" 
                 type="password"
                 isInvalid={!!signUpErrors.confirmPassword || !!signUpErrors.alreadyExist}
                 onChange={handleChange}
                 value={values.confirmPassword}
               />
-              <Form.Label htmlFor="password">Подвтердите пароль</Form.Label>
-              <Form.Control.Feedback type="invalid">{signUpErrors.confirmPassword || signUpErrors.alreadyExist}</Form.Control.Feedback>
+              <Form.Label htmlFor="password">{t('signUpPage.confirmPassword')} </Form.Label>
+              <Form.Control.Feedback type="invalid">{signUpErrors.confirmPassword ? t(`errors.${signUpErrors.confirmPassword}`) : t(`errors.${signUpErrors.alreadyExist}`)}</Form.Control.Feedback>
             </Form.Group>
-            <Button type="submit" value="submit" variant="outline-primary" className="w-100" disabled={isSubmitting}>Зарегистрироваться</Button>
+            <Button type="submit" value="submit" variant="outline-primary" className="w-100" disabled={isSubmitting}>{t('signUpPage.register')}</Button>
           </Form>
         );
       }}

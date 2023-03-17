@@ -3,6 +3,7 @@ import { useState, useEffect, useRef } from "react";
 import { Formik } from 'formik';
 import * as yup from 'yup';
 import { Form, Button, Modal } from 'react-bootstrap';
+import { useTranslation } from "react-i18next";
 import { closeModal } from "../../slices/modalSlice";
 import { useChatApi } from '../providers/SocketProvider';
 
@@ -17,7 +18,7 @@ const handleFormSubmit = (type, onHide, setError, currentChannel, chatApi) => ({
           setSubmitting(false);
         })
         .catch(() => {
-          setError('Ошибка сети');
+          setError('networkError');
           setSubmitting(false);
         });
       break;
@@ -31,7 +32,7 @@ const handleFormSubmit = (type, onHide, setError, currentChannel, chatApi) => ({
           setSubmitting(false);
         })
         .catch(() => {
-          setError('Ошибка сети');
+          setError('networkError');
           setSubmitting(false);
         });
       break;
@@ -55,6 +56,7 @@ const checkErrors = (errors, isSubmitting, setError, onHide, type, values, curre
 }
 
 const ChannelForm = ({ onHide, type, extra }) => {
+  const { t } = useTranslation();
   const [error, setError] = useState(null);
   const { chatApi } = useChatApi();
   const inputRef = useRef();
@@ -70,12 +72,12 @@ const ChannelForm = ({ onHide, type, extra }) => {
 
   yup.setLocale({
     string: {
-      min: 'От 3 до 20 символов',
-      max: 'От 3 до 20 символов',
+      min: 'incorrectChannelNameLength',
+      max: 'incorrectChannelNameLength',
     },
     mixed: {
-      required: 'Обязательное поле',
-      notOneOf: 'Должно быть уникальным',
+      required: 'requiredField',
+      notOneOf: 'needUnique',
     },
   });
   const validationSchema = yup.object().shape({
@@ -97,11 +99,11 @@ const ChannelForm = ({ onHide, type, extra }) => {
           <Form onSubmit={handleSubmit}>
             <Form.Group>
               <Form.Control name="name" id="name" className="mb-2" ref={inputRef} value={values.name} onChange={handleChange} isInvalid={!!error} />
-              <Form.Label htmlFor="name" className="visually-hidden">Имя канала</Form.Label>
-              <Form.Control.Feedback type="invalid">{error}</Form.Control.Feedback>
+              <Form.Label htmlFor="name" className="visually-hidden">{t('modal.channelName')}</Form.Label>
+              <Form.Control.Feedback type="invalid">{t(`errors.${error}`)}</Form.Control.Feedback>
               <div className="d-flex justify-content-end">
-                <Button type="button" variant="secondary" className="me-2" onClick={onHide}>Отменить</Button>
-                <Button type="submit" variant="primary" disabled={isSubmitting}>Отправить</Button>
+                <Button type="button" variant="secondary" className="me-2" onClick={onHide}>{t('modal.cancel')}</Button>
+                <Button type="submit" variant="primary" disabled={isSubmitting}>{t('modal.confirm')}</Button>
               </div>
             </Form.Group>
           </Form>
@@ -112,15 +114,16 @@ const ChannelForm = ({ onHide, type, extra }) => {
 };
 
 const DeleteConfirmation = ({ onHide, extra }) => {
+  const { t } = useTranslation();
   const [disabled, setDisabled] = useState(false);
   const [error, setError] = useState(null);
   const { chatApi } = useChatApi();
 
   return (
     <>
-      <p className="lead">Уверены?</p>
+      <p className="lead">{t('modal.sure')}</p>
       <div className="d-flex justify-content-end">
-        <Button className="me-2" variant="secondary" disabled={disabled} onClick={onHide}>Отменить</Button>
+        <Button className="me-2" variant="secondary" disabled={disabled} onClick={onHide}>{t('modal.cancel')}</Button>
         <Button className="me-2" variant="danger" disabled={disabled} onClick={() => {
           setDisabled(true);
           setError(null);
@@ -130,26 +133,20 @@ const DeleteConfirmation = ({ onHide, extra }) => {
               onHide();
             })
             .catch(() => {
-              setError('Ошибка сети');
+              setError('networkError');
               setDisabled(false);
             });
-        }}>Удалить</Button>
+        }}>{t('modal.delete')}</Button>
       </div>
-      {error && <div className="invalid-tooltip">{error}</div>}
+      {error && <div className="invalid-tooltip">{t(`errors.${error}`)}</div>}
     </>
   );
 };
 
 const ModalForm = () => {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const { isOpened, type, extra } = useSelector(({ modal: { isOpened, type, extra } }) => ({ isOpened, type, extra }));
-
-  const modalTitleScheme = {
-    addChannel: 'Добавить канал',
-    renameChannel: 'Переименовать канал',
-    deleteChannel: 'Удалить канал',
-    null: null,
-  };
 
   const modalBodyScheme = {
     addChannel: ChannelForm,
@@ -170,7 +167,7 @@ const ModalForm = () => {
     >
       <Modal.Header closeButton>
         <Modal.Title>
-          {modalTitleScheme[type]}
+          {type && t(`modal.${type}`)}
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>
