@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route, Navigate, Link } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate, Link, Outlet } from 'react-router-dom';
 import { MainPage } from './MainPage/MainPage.jsx';
 import { LoginPage } from './LoginPage/LoginPage.jsx';
 import { NotFoundPage } from './NotFoundPage/NotFoundPage.jsx';
@@ -12,19 +12,27 @@ const LogOutButton = () => {
   return auth.loggedIn ? <Button variant="primary" onClick={auth.logOut}>Выйти</Button> : null;
 };
 
-const MainRoute = ({ children }) => {
+const MainRoute = () => {
   const auth = useAuth();
 
   return (
-    auth.loggedIn ? children : <Navigate to="/login" />
+    auth.loggedIn ? <Outlet /> : <Navigate to="/login" />
   );
 };
 
-const SignUpRoute = ({ children }) => {
+const LoginRoute = () => {
   const auth = useAuth();
 
   return (
-    auth.loggedIn ? <Navigate to="/" /> : children
+    auth.loggedIn ? <Navigate to='/' /> : <Outlet />
+  );
+};
+
+const SignUpRoute = () => {
+  const auth = useAuth();
+
+  return (
+    auth.loggedIn ? <Navigate to="/" /> : <Outlet />
   );
 };
 
@@ -40,23 +48,15 @@ const App = () => (
             </Container>
           </Navbar>
           <Routes>
-            <Route 
-              path='/' 
-              element={(
-                <MainRoute>
-                  <MainPage />
-                </MainRoute>
-              )} 
-            />
-            <Route 
-              path='signup' 
-              element={(
-                <SignUpRoute>
-                  <SignUpPage />
-                </SignUpRoute>
-              )} 
-            />
-            <Route path='login' element={<LoginPage />} />
+            <Route element={<MainRoute />}>
+              <Route path='/' element={<MainPage />} />
+            </Route>
+            <Route element={<LoginRoute />}>
+              <Route path='login' element={<LoginPage />} />
+            </Route>
+            <Route element={<SignUpRoute />}>
+              <Route path='signup' element={<SignUpPage />} />
+            </Route>
             <Route path='*' element={<NotFoundPage />} />
           </Routes>
         </BrowserRouter>
