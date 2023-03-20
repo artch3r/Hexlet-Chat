@@ -1,8 +1,11 @@
-import { createContext } from 'react';
-import { useContext } from 'react';
+import { createContext, useContext } from 'react';
 import { useDispatch } from 'react-redux';
 import { addMessage } from '../../slices/messagesSlice';
-import { addChannel, deleteChannel, changeChannelName } from '../../slices/channelsSlice';
+import {
+  addChannel,
+  deleteChannel,
+  changeChannelName,
+} from '../../slices/channelsSlice';
 
 const SocketContext = createContext();
 const SocketProvider = ({ children, socket }) => {
@@ -41,6 +44,7 @@ const SocketProvider = ({ children, socket }) => {
   };
 
   return (
+    // eslint-disable-next-line react/jsx-no-constructed-context-values
     <SocketContext.Provider value={{ chatApi }}>
       {children}
     </SocketContext.Provider>

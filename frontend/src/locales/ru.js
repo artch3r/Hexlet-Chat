@@ -18,7 +18,6 @@ const ru = {
       password: 'Пароль',
       confirmPassword: 'Подтвердите пароль',
       register: 'Зарегистрироваться',
-
     },
     mainPage: {
       channels: {
@@ -48,7 +47,6 @@ const ru = {
       cancel: 'Отменить',
       delete: 'Удалить',
       confirm: 'Отправить',
-
     },
     errors: {
       incorrectChannelNameLength: 'От 3 до 20 символов',

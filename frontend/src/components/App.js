@@ -1,11 +1,18 @@
-import { BrowserRouter, Routes, Route, Navigate, Link, Outlet } from 'react-router-dom';
-import { useTranslation } from "react-i18next";
-import { ToastContainer } from 'react-toastify';
-import { MainPage } from './MainPage/MainPage.jsx';
-import { LoginPage } from './LoginPage/LoginPage.jsx';
-import { NotFoundPage } from './NotFoundPage/NotFoundPage.jsx';
-import SignUpPage from './SignUpPage/SignUpPage.jsx';
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+  Navigate,
+  Link,
+  Outlet,
+} from 'react-router-dom';
 import { Navbar, Container, Button } from 'react-bootstrap';
+import { useTranslation } from 'react-i18next';
+import { ToastContainer } from 'react-toastify';
+import MainPage from './MainPage/MainPage.jsx';
+import LoginPage from './LoginPage/LoginPage.jsx';
+import NotFoundPage from './NotFoundPage/NotFoundPage.jsx';
+import SignUpPage from './SignUpPage/SignUpPage.jsx';
 import { useAuth } from './providers/AuthProvider.jsx';
 import routes from '../routes.js';
 
@@ -13,31 +20,29 @@ const LogOutButton = () => {
   const { t } = useTranslation();
   const auth = useAuth();
 
-  return auth.loggedIn ? <Button variant="primary" onClick={auth.logOut}>{t('navbar.logout')}</Button> : null;
+  return auth.loggedIn ? (
+    <Button variant="primary" onClick={auth.logOut}>
+      {t('navbar.logout')}
+    </Button>
+  ) : null;
 };
 
 const MainRoute = () => {
   const auth = useAuth();
 
-  return (
-    auth.loggedIn ? <Outlet /> : <Navigate to={routes.loginPage()} />
-  );
+  return auth.loggedIn ? <Outlet /> : <Navigate to={routes.loginPage()} />;
 };
 
 const LoginRoute = () => {
   const auth = useAuth();
 
-  return (
-    auth.loggedIn ? <Navigate to={routes.mainPage()} /> : <Outlet />
-  );
+  return auth.loggedIn ? <Navigate to={routes.mainPage()} /> : <Outlet />;
 };
 
 const SignUpRoute = () => {
   const auth = useAuth();
 
-  return (
-    auth.loggedIn ? <Navigate to={routes.mainPage()} /> : <Outlet />
-  );
+  return auth.loggedIn ? <Navigate to={routes.mainPage()} /> : <Outlet />;
 };
 
 const App = () => {
@@ -50,7 +55,9 @@ const App = () => {
           <BrowserRouter>
             <Navbar expand="lg" bg="white" className="shadow-sm">
               <Container>
-                <Navbar.Brand as={Link} to={routes.mainPage()}>{t('navbar.hexletChat')}</Navbar.Brand>
+                <Navbar.Brand as={Link} to={routes.mainPage()}>
+                  {t('navbar.hexletChat')}
+                </Navbar.Brand>
                 <LogOutButton />
               </Container>
             </Navbar>
@@ -68,16 +75,16 @@ const App = () => {
             </Routes>
           </BrowserRouter>
           <ToastContainer
-          position="top-right"
-          autoClose={5000}
-          hideProgressBar={false}
-          newestOnTop={false}
-          closeOnClick
-          rtl={false}
-          pauseOnFocusLoss
-          draggable
-          pauseOnHover
-          theme="light"
+            position="top-right"
+            autoClose={5000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+            theme="light"
           />
         </div>
       </div>

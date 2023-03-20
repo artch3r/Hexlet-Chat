@@ -5,7 +5,7 @@ import { fetchInitialData } from '../../slices/channelsSlice.js';
 import Channels from './Channels.jsx';
 import Messages from './Messages.jsx';
 
-export const MainPage = () => {
+const MainPage = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -20,4 +20,6 @@ export const MainPage = () => {
       </Row>
     </Container>
   );
-}
+};
+
+export default MainPage;

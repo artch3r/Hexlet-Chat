@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 import routes from '../routes';
@@ -12,13 +13,12 @@ const getAuthHeader = () => {
   return {};
 };
 
-export const fetchInitialData = createAsyncThunk(
-  '/api/v1/data',
-  async () => {
-    const { data } = await axios.get(routes.apiGetData(), { headers: getAuthHeader() });
-    return data;
-  },
-);
+export const fetchInitialData = createAsyncThunk('/api/v1/data', async () => {
+  const { data } = await axios.get(routes.apiGetData(), {
+    headers: getAuthHeader(),
+  });
+  return data;
+});
 
 const initialState = {
   channels: [],
@@ -37,13 +37,17 @@ const channelsSlice = createSlice({
       state.currentChannelId = payload.id;
     },
     deleteChannel(state, { payload }) {
-      const newChannels = state.channels.filter((channel) => channel.id !== payload);
+      const newChannels = state.channels.filter(
+        (channel) => channel.id !== payload,
+      );
       state.channels = newChannels;
       state.currentChannelId = 1;
     },
     changeChannelName(state, { payload }) {
       const currentChannels = state.channels;
-      const filteredChannels = currentChannels.filter((channel) => channel.id !== payload.id);
+      const filteredChannels = currentChannels.filter(
+        (channel) => channel.id !== payload.id,
+      );
       const newChannels = [...filteredChannels, payload];
       state.channels = newChannels;
     },
@@ -57,6 +61,8 @@ const channelsSlice = createSlice({
   },
 });
 
-export const { setChannel, addChannel, deleteChannel, changeChannelName } = channelsSlice.actions;
+export const {
+  setChannel, addChannel, deleteChannel, changeChannelName,
+} = channelsSlice.actions;
 
 export default channelsSlice.reducer;

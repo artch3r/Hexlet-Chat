@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 import { createSlice } from '@reduxjs/toolkit';
 import { fetchInitialData, deleteChannel } from './channelsSlice';
 
@@ -19,8 +20,10 @@ const messagesSlice = createSlice({
       state.messages.push(...messages);
     });
     builder.addCase(deleteChannel, (state, { payload }) => {
-      const messages = state.messages;
-      const newMessages = messages.filter((message) => message.channelId !== payload);
+      const { messages } = state;
+      const newMessages = messages.filter(
+        (message) => message.channelId !== payload,
+      );
       state.messages = newMessages;
     });
   },
