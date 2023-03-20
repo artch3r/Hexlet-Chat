@@ -1,6 +1,7 @@
 import { Provider } from 'react-redux';
 import i18next from 'i18next';
 import { I18nextProvider, initReactI18next } from 'react-i18next';
+import filter from 'leo-profanity';
 import store from './slices/index.js';
 import AuthProvider from './components/providers/AuthProvider.jsx';
 import SocketProvider from './components/providers/SocketProvider.jsx';
@@ -17,6 +18,9 @@ const init = async (socket) => {
       lng: 'ru',
       fallbackLng: 'ru',
     });
+  
+  filter.add(filter.getDictionary('ru'));
+  filter.add(filter.getDictionary('en'));
 
   return (
     <I18nextProvider i18n={i18n}>

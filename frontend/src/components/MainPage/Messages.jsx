@@ -2,6 +2,7 @@ import { useSelector } from "react-redux";
 import { Col, Form, Button } from 'react-bootstrap';
 import { useFormik } from 'formik';
 import { useTranslation } from "react-i18next";
+import filter from 'leo-profanity';
 import { useRef, useEffect } from 'react';
 import { toast } from 'react-toastify';
 import { useChatApi } from "../providers/SocketProvider.jsx";
@@ -22,7 +23,7 @@ const MessageForm = ({ activeChannel, currentMessages }) => {
     },
     onSubmit: ({ body }, { resetForm, setSubmitting }) => {
       const { username } = JSON.parse(localStorage.userId);
-      const message = { body, username, channelId: activeChannel.id };
+      const message = { body: filter.clean(body), username, channelId: activeChannel.id };
 
       chatApi.sendMessage(message)
         .then(() => {
