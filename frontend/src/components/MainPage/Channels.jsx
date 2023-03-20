@@ -28,7 +28,9 @@ const renderChannels = (channels, currentChannelId, t) => channels.map((channel)
             <span class="me-1">#</span>
             {channel.name}
           </Button>
-          <Dropdown.Toggle split variant={buttonVariant} />
+          <Dropdown.Toggle split variant={buttonVariant}>
+            <span class="visually-hidden">{t('mainPage.channels.channelManage')}</span>
+          </Dropdown.Toggle>
           <Dropdown.Menu>
             <Dropdown.Item onClick={() => dispatch(openModal({ type: 'deleteChannel', extra: { channelId: channel.id } }))}>{t('mainPage.channels.delete')}</Dropdown.Item>
             <Dropdown.Item onClick={() => dispatch(openModal({ type: 'renameChannel', extra: { channelId: channel.id } }))}>{t('mainPage.channels.rename')}</Dropdown.Item>

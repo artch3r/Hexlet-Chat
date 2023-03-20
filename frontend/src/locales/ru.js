@@ -22,6 +22,7 @@ const ru = {
     },
     mainPage: {
       channels: {
+        channelManage: 'Управление каналом',
         delete: 'Удалить',
         rename: 'Переименовать',
         channels: 'Каналы',
