@@ -101,6 +101,7 @@ const SignUpForm = () => {
     initialValues={{
       username: '',
       password: '',
+      confirmPassword: '',
     }}
     validationSchema={validationSchema}
     onSubmit={async (values) => {
@@ -180,7 +181,7 @@ const SignUpForm = () => {
                 onChange={handleChange}
                 value={values.confirmPassword}
               />
-              <Form.Label htmlFor="password">{t('signUpPage.confirmPassword')} </Form.Label>
+              <Form.Label htmlFor="confirmPassword">{t('signUpPage.confirmPassword')}</Form.Label>
               <Form.Control.Feedback type="invalid">{signUpErrors.confirmPassword ? t(`errors.${signUpErrors.confirmPassword}`) : t(`errors.${signUpErrors.alreadyExist}`)}</Form.Control.Feedback>
             </Form.Group>
             <Button type="submit" value="submit" variant="outline-primary" className="w-100" disabled={isSubmitting}>{t('signUpPage.register')}</Button>
