@@ -63,7 +63,7 @@ const ru = {
     },
     toasts: {
       addChannel: 'Канал создан',
-      deleteChannel: 'Канал удален',
+      deleteChannel: 'Канал удалён',
       renameChannel: 'Канал переименован',
       networkError: 'Ошибка соединения',
     },
