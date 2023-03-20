@@ -58,13 +58,13 @@ const ru = {
       needUnique: 'Должно быть уникальным',
       shouldConfirm: 'Пароли должны совпадать',
       alreadyExist: 'Такой пользователь уже существует',
-      networkError: 'Ошибка сети',
+      networkError: 'Ошибка соединения',
     },
     toasts: {
       addChannel: 'Канал создан',
       deleteChannel: 'Канал удален',
       renameChannel: 'Канал переименован',
-      networkError: 'Ошибка сети',
+      networkError: 'Ошибка соединения',
     },
   },
 };
