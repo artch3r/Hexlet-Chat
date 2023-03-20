@@ -2,37 +2,38 @@ import { useDispatch, useSelector } from "react-redux";
 import { useState, useEffect, useRef } from "react";
 import { Formik } from 'formik';
 import * as yup from 'yup';
+import { toast } from 'react-toastify';
 import { Form, Button, Modal } from 'react-bootstrap';
 import { useTranslation } from "react-i18next";
 import { closeModal } from "../../slices/modalSlice";
 import { useChatApi } from '../providers/SocketProvider';
 
-const handleFormSubmit = (type, onHide, setError, currentChannel, chatApi) => ({ name }, { setSubmitting }) => {
+const handleFormSubmit = (type, onHide, currentChannel, chatApi, t) => ({ name }, { setSubmitting }) => {
   switch (type) {
     case 'addChannel': {
-      setError(null);
       const channel = { name };
       chatApi.createChannel(channel)
         .then(() => {
+          toast.success(t('toasts.addChannel'))
           onHide();
           setSubmitting(false);
         })
         .catch(() => {
-          setError('networkError');
+          toast.error(t('toasts.networkError'));
           setSubmitting(false);
         });
       break;
     }
 
     case 'renameChannel': {
-      setError(null);
       chatApi.renameChannel(currentChannel.id, name)
         .then(() => {
+          toast.success(t('toasts.renameChannel'))
           onHide();
           setSubmitting(false);
         })
         .catch(() => {
-          setError('networkError');
+          toast.error(t('toasts.networkError'));
           setSubmitting(false);
         });
       break;
@@ -90,7 +91,7 @@ const ChannelForm = ({ onHide, type, extra }) => {
       name: currentChannel ? currentChannel.name : '',
     }}
     validationSchema={validationSchema}
-    onSubmit={handleFormSubmit(type, onHide, setError, currentChannel, chatApi)}
+    onSubmit={handleFormSubmit(type, onHide, currentChannel, chatApi, t)}
     >
       {({ values, errors, handleChange, handleSubmit, isSubmitting }) => {
         checkErrors(errors, isSubmitting, setError, onHide, type, values, currentChannel);
@@ -116,7 +117,6 @@ const ChannelForm = ({ onHide, type, extra }) => {
 const DeleteConfirmation = ({ onHide, extra }) => {
   const { t } = useTranslation();
   const [disabled, setDisabled] = useState(false);
-  const [error, setError] = useState(null);
   const { chatApi } = useChatApi();
 
   return (
@@ -126,19 +126,18 @@ const DeleteConfirmation = ({ onHide, extra }) => {
         <Button className="me-2" variant="secondary" disabled={disabled} onClick={onHide}>{t('modal.cancel')}</Button>
         <Button className="me-2" variant="danger" disabled={disabled} onClick={() => {
           setDisabled(true);
-          setError(null);
           chatApi.removeChannel(extra.channelId)
             .then(() => {
+              toast.success(t('toasts.deleteChannel'))
               setDisabled(false);
               onHide();
             })
             .catch(() => {
-              setError('networkError');
+              toast.error(t('toasts.networkError'));
               setDisabled(false);
             });
         }}>{t('modal.delete')}</Button>
       </div>
-      {error && <div className="invalid-tooltip">{t(`errors.${error}`)}</div>}
     </>
   );
 };

@@ -5,6 +5,7 @@ import axios from 'axios';
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from "react-i18next";
+import { toast } from 'react-toastify';
 import loginImage from '../../images/login.jpeg';
 import { useAuth } from '../providers/AuthProvider.jsx';
 import routes from '../../routes';
@@ -59,10 +60,18 @@ const LoginForm = () => {
         navigate(routes.mainPage());
       } catch(error) {
         formik.setSubmitting(false);
-        if (error.isAxiosError && error.response.status === 401) {
-          setAuthFailed(true);
-          inputRef.current.select();
-          return;
+        console.log('error', error);
+        if (error.isAxiosError) {
+          if (error.message === 'Network Error') {
+            toast.error(t('toasts.networkError'));
+            return;
+          }
+
+          if (error.response.status === 401) {
+            setAuthFailed(true);
+            inputRef.current.select();
+            return;
+          }
         }
 
         throw error;

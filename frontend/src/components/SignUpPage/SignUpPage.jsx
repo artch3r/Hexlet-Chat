@@ -6,6 +6,7 @@ import * as yup from 'yup';
 import axios from "axios";
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from "react-i18next";
+import { toast } from 'react-toastify';
 import { useAuth } from "../providers/AuthProvider";
 import signUpImage from '../../images/signUp.jpg';
 import routes from "../../routes";
@@ -113,13 +114,22 @@ const SignUpForm = () => {
         auth.logIn();
         navigate(routes.mainPage());
       } catch (error) {
-        if (error.isAxiosError && error.response.status === 409) {
-          updateSignUpErrors((state) => {
-            state.alreadyExist = 'alreadyExist';
-          });
+        if (error.isAxiosError) {
+          if (error.message === 'Network Error') {
+            toast.error(t('toasts.networkError'));
+            return;
+          }
 
-          inputRef.current.select();
-          return;
+          if (error.response.status === 409) {
+            updateSignUpErrors((state) => {
+              state.alreadyExist = 'alreadyExist';
+            });
+  
+            inputRef.current.select();
+            return;
+          }
+          
+          throw error;
         }
       }
     }}

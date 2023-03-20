@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route, Navigate, Link, Outlet } from 'react-router-dom';
 import { useTranslation } from "react-i18next";
+import { ToastContainer } from 'react-toastify';
 import { MainPage } from './MainPage/MainPage.jsx';
 import { LoginPage } from './LoginPage/LoginPage.jsx';
 import { NotFoundPage } from './NotFoundPage/NotFoundPage.jsx';
@@ -66,6 +67,18 @@ const App = () => {
               <Route path={routes.notFoundPage()} element={<NotFoundPage />} />
             </Routes>
           </BrowserRouter>
+          <ToastContainer
+          position="top-right"
+          autoClose={5000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="light"
+          />
         </div>
       </div>
     </div>

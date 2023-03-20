@@ -60,6 +60,12 @@ const ru = {
       alreadyExist: 'Такой пользователь уже существует',
       networkError: 'Ошибка сети',
     },
+    toasts: {
+      addChannel: 'Канал создан',
+      deleteChannel: 'Канал удален',
+      renameChannel: 'Канал переименован',
+      networkError: 'Ошибка сети',
+    },
   },
 };
 
