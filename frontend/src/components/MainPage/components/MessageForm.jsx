@@ -11,7 +11,7 @@ import { useAuth } from '../../providers/AuthProvider.jsx';
 const MessageForm = ({ activeChannel, currentMessages }) => {
   const { t } = useTranslation();
   const inputRef = useRef();
-  const { chatApi } = useChatApi();
+  const chatApi = useChatApi();
   const auth = useAuth();
   const { currentChannelId } = useSelector(({ channelsInfo }) => channelsInfo);
 

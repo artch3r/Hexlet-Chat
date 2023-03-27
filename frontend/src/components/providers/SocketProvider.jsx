@@ -1,4 +1,6 @@
-import { createContext, useContext } from 'react';
+import {
+  createContext, useContext, useMemo, useCallback,
+} from 'react';
 import { useDispatch } from 'react-redux';
 import { addMessage } from '../../slices/messagesSlice';
 import {
@@ -27,25 +29,24 @@ const SocketProvider = ({ children, socket }) => {
     dispatch(changeChannelName(channel));
   });
 
-  const createSocketMessage = (event, data) => new Promise((resolve, reject) => {
+  const createSocketMessage = useCallback((event, data) => new Promise((resolve, reject) => {
     socket.timeout(5000).volatile.emit(event, data, (err) => {
       if (err) {
         reject(err);
       }
       resolve();
     });
-  });
+  }), [socket]);
 
-  const chatApi = {
+  const chatApi = useMemo(() => ({
     sendMessage: (message) => createSocketMessage('newMessage', message),
     createChannel: (channel) => createSocketMessage('newChannel', channel),
     removeChannel: (id) => createSocketMessage('removeChannel', { id }),
     renameChannel: (id, name) => createSocketMessage('renameChannel', { id, name }),
-  };
+  }), [createSocketMessage]);
 
   return (
-    // eslint-disable-next-line react/jsx-no-constructed-context-values
-    <SocketContext.Provider value={{ chatApi }}>
+    <SocketContext.Provider value={chatApi}>
       {children}
     </SocketContext.Provider>
   );

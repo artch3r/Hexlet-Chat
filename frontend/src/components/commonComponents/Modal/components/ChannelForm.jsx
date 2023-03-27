@@ -59,7 +59,7 @@ const checkErrors = (errors, isSubmitting, setError, onHide, type, values, curre
 const ChannelForm = ({ onHide, type, extra }) => {
   const { t } = useTranslation();
   const [error, setError] = useState(null);
-  const { chatApi } = useChatApi();
+  const chatApi = useChatApi();
   const inputRef = useRef();
   useEffect(() => {
     inputRef.current.select();

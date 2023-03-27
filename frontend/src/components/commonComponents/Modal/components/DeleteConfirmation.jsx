@@ -7,7 +7,7 @@ import { useChatApi } from '../../../providers/SocketProvider';
 const DeleteConfirmation = ({ onHide, extra }) => {
   const { t } = useTranslation();
   const [disabled, setDisabled] = useState(false);
-  const { chatApi } = useChatApi();
+  const chatApi = useChatApi();
 
   return (
     <>
