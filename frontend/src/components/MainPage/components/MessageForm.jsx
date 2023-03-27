@@ -49,7 +49,6 @@ const MessageForm = ({ activeChannel, currentMessages }) => {
       noValidate
       className="py-1 border rounded-2"
       onSubmit={formik.handleSubmit}
-      disabled={formik.isSubmitting}
     >
       <Form.Group className="has-validation input-group">
         <Form.Control

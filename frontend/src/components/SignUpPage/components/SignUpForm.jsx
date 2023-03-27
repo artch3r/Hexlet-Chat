@@ -80,6 +80,7 @@ const SignUpForm = () => {
               isInvalid={
                 (errors.username && touched.username) || signUpFailed
               }
+              disabled={isSubmitting}
               ref={inputRef}
               onChange={handleChange}
               value={values.username}
@@ -102,6 +103,7 @@ const SignUpForm = () => {
               isInvalid={
                 (errors.password && touched.password) || signUpFailed
               }
+              disabled={isSubmitting}
               onChange={handleChange}
               value={values.password}
             />
@@ -122,6 +124,7 @@ const SignUpForm = () => {
               isInvalid={
                 (errors.confirmPassword && touched.confirmPassword) || signUpFailed
               }
+              disabled={isSubmitting}
               onChange={handleChange}
               value={values.confirmPassword}
             />

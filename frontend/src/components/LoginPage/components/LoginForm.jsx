@@ -71,6 +71,7 @@ const LoginForm = () => {
           id="username"
           type="login"
           isInvalid={authFailed}
+          disabled={formik.isSubmitting}
           ref={inputRef}
           onChange={formik.handleChange}
           value={formik.values.username}
@@ -86,6 +87,7 @@ const LoginForm = () => {
           id="password"
           type="password"
           isInvalid={authFailed}
+          disabled={formik.isSubmitting}
           onChange={formik.handleChange}
           value={formik.values.password}
         />
