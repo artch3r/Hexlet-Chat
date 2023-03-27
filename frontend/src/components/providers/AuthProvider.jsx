@@ -1,4 +1,6 @@
-import { createContext, useContext, useState } from 'react';
+import {
+  createContext, useContext, useState, useMemo, useCallback,
+} from 'react';
 
 const AuthContext = createContext({});
 
@@ -6,19 +8,30 @@ const AuthProvider = ({ children }) => {
   const currentUser = JSON.parse(localStorage.getItem('userId'));
   const [user, setUser] = useState(currentUser);
 
-  const logIn = (data) => {
+  const logIn = useCallback((data) => {
     localStorage.setItem('userId', JSON.stringify(data));
     setUser(data);
-  };
+  }, []);
 
-  const logOut = () => {
+  const logOut = useCallback(() => {
     localStorage.removeItem('userId');
     setUser(null);
-  };
+  }, []);
+
+  const getAuthHeader = useCallback(() => {
+    if (user && user.token) {
+      return { Authorization: `Bearer ${user.token}` };
+    }
+
+    return {};
+  }, [user]);
+
+  const context = useMemo(() => ({
+    user, logIn, logOut, getAuthHeader,
+  }), [user, logIn, logOut, getAuthHeader]);
 
   return (
-    // eslint-disable-next-line react/jsx-no-constructed-context-values
-    <AuthContext.Provider value={{ user, logIn, logOut }}>
+    <AuthContext.Provider value={context}>
       {children}
     </AuthContext.Provider>
   );
