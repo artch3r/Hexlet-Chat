@@ -1,12 +1,11 @@
-import { useDispatch, useSelector } from 'react-redux';
+import { Form, Button } from 'react-bootstrap';
 import { useState, useEffect, useRef } from 'react';
+import { useSelector } from 'react-redux';
 import { Formik } from 'formik';
 import * as yup from 'yup';
 import { toast } from 'react-toastify';
-import { Form, Button, Modal } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
-import { closeModal } from '../../slices/modalSlice';
-import { useChatApi } from '../providers/SocketProvider';
+import { useChatApi } from '../../../providers/SocketProvider';
 
 const handleFormSubmit = (type, onHide, currentChannel, chatApi, t) => (
   ({ name }, { setSubmitting }) => {
@@ -120,83 +119,4 @@ const ChannelForm = ({ onHide, type, extra }) => {
   );
 };
 
-const DeleteConfirmation = ({ onHide, extra }) => {
-  const { t } = useTranslation();
-  const [disabled, setDisabled] = useState(false);
-  const { chatApi } = useChatApi();
-
-  return (
-    <>
-      <p className="lead">{t('modal.sure')}</p>
-      <div className="d-flex justify-content-end">
-        <Button
-          className="me-2"
-          variant="secondary"
-          disabled={disabled}
-          onClick={onHide}
-        >
-          {t('modal.cancel')}
-        </Button>
-        <Button
-          className="me-2"
-          variant="danger"
-          disabled={disabled}
-          onClick={() => {
-            setDisabled(true);
-            chatApi.removeChannel(extra.channelId)
-              .then(() => {
-                toast.success(t('toasts.deleteChannel'));
-                setDisabled(false);
-                onHide();
-              })
-              .catch(() => {
-                toast.error(t('toasts.networkError'));
-                setDisabled(false);
-              });
-          }}
-        >
-          {t('modal.delete')}
-        </Button>
-      </div>
-    </>
-  );
-};
-
-const ModalForm = () => {
-  const { t } = useTranslation();
-  const dispatch = useDispatch();
-  // eslint-disable-next-line no-shadow
-  const { isOpened, type, extra } = useSelector(({ modal: { isOpened, type, extra } }) => (
-    { isOpened, type, extra }
-  ));
-
-  const modalBodyScheme = {
-    addChannel: ChannelForm,
-    renameChannel: ChannelForm,
-    deleteChannel: DeleteConfirmation,
-    null: null,
-  };
-
-  const Body = modalBodyScheme[type];
-
-  const onHide = () => dispatch(closeModal());
-
-  return (
-    <Modal
-      show={isOpened}
-      onHide={onHide}
-      centered
-    >
-      <Modal.Header closeButton>
-        <Modal.Title>
-          {type && t(`modal.${type}`)}
-        </Modal.Title>
-      </Modal.Header>
-      <Modal.Body>
-        {Body && <Body type={type} extra={extra} onHide={onHide} />}
-      </Modal.Body>
-    </Modal>
-  );
-};
-
-export default ModalForm;
+export default ChannelForm;
