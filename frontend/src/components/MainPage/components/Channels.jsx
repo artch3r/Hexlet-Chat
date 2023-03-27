@@ -3,9 +3,9 @@ import {
   Button, ButtonGroup, Dropdown, Nav,
 } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
-import { setChannel } from '../../slices/channelsSlice';
-import ModalForm from '../Modal/Modal.jsx';
-import { openModal } from '../../slices/modalSlice';
+import { setChannel } from '../../../slices/channelsSlice';
+import ModalForm from '../../Modal/Modal.jsx';
+import { openModal } from '../../../slices/modalSlice';
 
 const chooseChannelElement = (channel, currentChannelId, dispatch, t) => {
   if (channel.removable === false) {

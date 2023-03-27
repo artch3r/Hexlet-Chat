@@ -3,8 +3,8 @@ import { useDispatch } from 'react-redux';
 import { Container, Row } from 'react-bootstrap';
 import { fetchInitialData } from '../../slices/channelsSlice.js';
 import { useAuth } from '../providers/AuthProvider.jsx';
-import Channels from './Channels.jsx';
-import Messages from './Messages.jsx';
+import Channels from './components/Channels.jsx';
+import Messages from './components/Messages.jsx';
 
 const MainPage = () => {
   const dispatch = useDispatch();
