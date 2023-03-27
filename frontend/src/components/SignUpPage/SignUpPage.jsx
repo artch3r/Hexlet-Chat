@@ -125,8 +125,7 @@ const SignUpForm = () => {
 
         try {
           const res = await axios.post(routes.apiSignUp(), values);
-          localStorage.setItem('userId', JSON.stringify(res.data));
-          auth.logIn();
+          auth.logIn(res.data);
           navigate(routes.mainPage());
         } catch (error) {
           if (error.isAxiosError) {

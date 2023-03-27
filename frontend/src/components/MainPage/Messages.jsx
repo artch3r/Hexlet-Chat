@@ -6,11 +6,13 @@ import filter from 'leo-profanity';
 import { useRef, useEffect } from 'react';
 import { toast } from 'react-toastify';
 import { useChatApi } from '../providers/SocketProvider.jsx';
+import { useAuth } from '../providers/AuthProvider.jsx';
 
 const MessageForm = ({ activeChannel, currentMessages }) => {
   const { t } = useTranslation();
   const inputRef = useRef();
   const { chatApi } = useChatApi();
+  const auth = useAuth();
   const { currentChannelId } = useSelector(({ channelsInfo }) => channelsInfo);
 
   useEffect(() => {
@@ -22,7 +24,7 @@ const MessageForm = ({ activeChannel, currentMessages }) => {
       body: '',
     },
     onSubmit: ({ body }, { resetForm, setSubmitting }) => {
-      const { username } = JSON.parse(localStorage.userId);
+      const { username } = auth.user;
       const message = {
         body: filter.clean(body),
         username,

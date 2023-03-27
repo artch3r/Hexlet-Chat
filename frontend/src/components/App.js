@@ -20,7 +20,7 @@ const LogOutButton = () => {
   const { t } = useTranslation();
   const auth = useAuth();
 
-  return auth.loggedIn ? (
+  return auth.user ? (
     <Button variant="primary" onClick={auth.logOut}>
       {t('navbar.logout')}
     </Button>
@@ -30,19 +30,19 @@ const LogOutButton = () => {
 const MainRoute = () => {
   const auth = useAuth();
 
-  return auth.loggedIn ? <Outlet /> : <Navigate to={routes.loginPage()} />;
+  return auth.user ? <Outlet /> : <Navigate to={routes.loginPage()} />;
 };
 
 const LoginRoute = () => {
   const auth = useAuth();
 
-  return auth.loggedIn ? <Navigate to={routes.mainPage()} /> : <Outlet />;
+  return auth.user ? <Navigate to={routes.mainPage()} /> : <Outlet />;
 };
 
 const SignUpRoute = () => {
   const auth = useAuth();
 
-  return auth.loggedIn ? <Navigate to={routes.mainPage()} /> : <Outlet />;
+  return auth.user ? <Navigate to={routes.mainPage()} /> : <Outlet />;
 };
 
 const App = () => {
