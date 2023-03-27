@@ -1,6 +1,7 @@
 import { Card } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import signUpImage from '../../../images/signUp.jpg';
+import routes from '../../../routes';
 
 const SignUpCard = ({ children }) => {
   const { t } = useTranslation();
@@ -17,6 +18,15 @@ const SignUpCard = ({ children }) => {
         </div>
         {children}
       </Card.Body>
+      <Card.Footer className="p-4">
+        <div className="text-center">
+          <span>
+            {t('signUpPage.alreadyHave')}
+            {' '}
+          </span>
+          <a href={routes.loginPage()}>{t('signUpPage.login')}</a>
+        </div>
+      </Card.Footer>
     </Card>
   );
 };

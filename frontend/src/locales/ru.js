@@ -18,6 +18,8 @@ const ru = {
       password: 'Пароль',
       confirmPassword: 'Подтвердите пароль',
       register: 'Зарегистрироваться',
+      login: 'Войти',
+      alreadyHave: 'Уже есть аккаунт?',
     },
     mainPage: {
       channels: {
