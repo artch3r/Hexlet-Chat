@@ -27,19 +27,13 @@ const LogOutButton = () => {
   ) : null;
 };
 
-const MainRoute = () => {
+const PrivateRoute = () => {
   const auth = useAuth();
 
   return auth.user ? <Outlet /> : <Navigate to={routes.loginPage()} />;
 };
 
-const LoginRoute = () => {
-  const auth = useAuth();
-
-  return auth.user ? <Navigate to={routes.mainPage()} /> : <Outlet />;
-};
-
-const SignUpRoute = () => {
+const PublicRoute = () => {
   const auth = useAuth();
 
   return auth.user ? <Navigate to={routes.mainPage()} /> : <Outlet />;
@@ -62,13 +56,11 @@ const App = () => {
               </Container>
             </Navbar>
             <Routes>
-              <Route element={<MainRoute />}>
+              <Route element={<PrivateRoute />}>
                 <Route path={routes.mainPage()} element={<MainPage />} />
               </Route>
-              <Route element={<LoginRoute />}>
+              <Route element={<PublicRoute />}>
                 <Route path={routes.loginPage()} element={<LoginPage />} />
-              </Route>
-              <Route element={<SignUpRoute />}>
                 <Route path={routes.signUpPage()} element={<SignUpPage />} />
               </Route>
               <Route path={routes.notFoundPage()} element={<NotFoundPage />} />
