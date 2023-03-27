@@ -22,7 +22,7 @@ const init = async (socket) => {
   filter.add(filter.getDictionary('en'));
 
   const rollbarConfig = {
-    accessToken: '39da1795bb614b51b7bcdb6ba2e247ee',
+    accessToken: process.env.REACT_APP_ROLLBAR_TOKEN,
     environment: 'production',
   };
 
