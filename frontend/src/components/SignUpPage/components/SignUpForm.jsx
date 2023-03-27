@@ -62,30 +62,13 @@ const SignUpForm = () => {
     inputRef.current.focus();
   }, []);
 
-  yup.setLocale({
-    string: {
-      min: ({ min }) => {
-        if (min === 3) {
-          return 'incorrectUsernameLength';
-        }
-
-        return 'incorrectPasswordLength';
-      },
-      max: 'incorrectMaxLength',
-    },
-    mixed: {
-      required: 'requiredField',
-      oneOf: 'shouldConfirm',
-    },
-  });
-
   const validationSchema = yup.object().shape({
-    username: yup.string().min(3).max(20).required(),
-    password: yup.string().min(6).max(20).required(),
+    username: yup.string().min(3, 'incorrectUsernameLength').max(20, 'incorrectUsernameLength').required('requiredField'),
+    password: yup.string().min(6, 'incorrectPasswordLength').max(20, 'incorrectPasswordLength').required('requiredField'),
     confirmPassword: yup
       .string()
-      .required()
-      .oneOf([yup.ref('password')]),
+      .required('requiredField')
+      .oneOf([yup.ref('password')], 'shouldConfirm'),
   });
 
   return (

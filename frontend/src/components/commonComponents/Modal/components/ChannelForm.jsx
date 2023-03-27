@@ -71,21 +71,11 @@ const ChannelForm = ({ onHide, type, extra }) => {
     ? channels.find((channel) => channel.id === extra.channelId)
     : null;
 
-  yup.setLocale({
-    string: {
-      min: 'incorrectChannelNameLength',
-      max: 'incorrectChannelNameLength',
-    },
-    mixed: {
-      required: 'requiredField',
-      notOneOf: 'needUnique',
-    },
-  });
   const validationSchema = yup.object().shape({
-    name: yup.string().required().trim().lowercase()
-      .min(3)
-      .max(20)
-      .notOneOf(channelsNames),
+    name: yup.string().required('requiredField').trim().lowercase()
+      .min(3, 'incorrectChannelNameLength')
+      .max(20, 'incorrectChannelNameLength')
+      .notOneOf(channelsNames, 'needUnique'),
   });
 
   return (
