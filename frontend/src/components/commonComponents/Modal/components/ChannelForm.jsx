@@ -1,5 +1,5 @@
 import { Form, Button } from 'react-bootstrap';
-import { useState, useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { useSelector } from 'react-redux';
 import { Formik } from 'formik';
 import * as yup from 'yup';
@@ -44,21 +44,8 @@ const handleFormSubmit = (type, onHide, currentChannel, chatApi, t) => (
     }
   });
 
-const checkErrors = (errors, isSubmitting, setError, onHide, type, values, currentChannel) => {
-  if (isSubmitting && errors.name) {
-    setError(errors.name);
-  }
-  if (isSubmitting && !errors.name) {
-    setError(null);
-  }
-  if (type === 'renameChannel' && values.name === currentChannel.name && isSubmitting) {
-    onHide();
-  }
-};
-
 const ChannelForm = ({ onHide, type, extra }) => {
   const { t } = useTranslation();
-  const [error, setError] = useState(null);
   const chatApi = useChatApi();
   const inputRef = useRef();
   useEffect(() => {
@@ -87,18 +74,20 @@ const ChannelForm = ({ onHide, type, extra }) => {
       onSubmit={handleFormSubmit(type, onHide, currentChannel, chatApi, t)}
     >
       {({
-        values, errors, handleChange, handleSubmit, isSubmitting,
+        values, errors, touched, handleChange, handleSubmit, isSubmitting,
       }) => {
-        checkErrors(errors, isSubmitting, setError, onHide, type, values, currentChannel);
+        if (type === 'renameChannel' && values.name === currentChannel.name && isSubmitting) {
+          onHide();
+        }
 
         return (
           <Form onSubmit={handleSubmit}>
             <Form.Group>
-              <Form.Control name="name" id="name" className="mb-2" ref={inputRef} value={values.name} onChange={handleChange} isInvalid={!!error} />
+              <Form.Control name="name" id="name" className="mb-2" ref={inputRef} value={values.name} onChange={handleChange} disabled={isSubmitting} isInvalid={errors.name && touched.name} />
               <Form.Label htmlFor="name" className="visually-hidden">{t('modal.channelName')}</Form.Label>
-              <Form.Control.Feedback type="invalid">{t(`errors.${error}`)}</Form.Control.Feedback>
+              <Form.Control.Feedback type="invalid">{t(`errors.${errors.name}`)}</Form.Control.Feedback>
               <div className="d-flex justify-content-end">
-                <Button type="button" variant="secondary" className="me-2" onClick={onHide}>{t('modal.cancel')}</Button>
+                <Button type="button" variant="secondary" className="me-2" disabled={isSubmitting} onClick={onHide}>{t('modal.cancel')}</Button>
                 <Button type="submit" variant="primary" disabled={isSubmitting}>{t('modal.confirm')}</Button>
               </div>
             </Form.Group>
