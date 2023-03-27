@@ -32,7 +32,9 @@ const ru = {
         newMessage: 'Новое сообщение',
         enterMessage: 'Введите сообщение...',
         send: 'Отправить',
-        messages: 'Сообщений',
+        message_one: '{{count}} сообщение',
+        message_few: '{{count}} сообщения',
+        message_many: '{{count}} сообщений',
       },
     },
     notFoundPage: {

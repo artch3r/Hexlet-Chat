@@ -33,7 +33,7 @@ const Messages = () => {
             </b>
           </p>
           <span className="text-muted">
-            {`${currentMessages.length} ${t('mainPage.messages.messages')}`}
+            {t('mainPage.messages.message', { count: currentMessages.length })}
           </span>
         </div>
         <div id="messages-box" className="chat-messages overflow-auto px-5">
