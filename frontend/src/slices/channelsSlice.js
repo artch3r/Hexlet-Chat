@@ -3,7 +3,7 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 import routes from '../routes';
 
-export const fetchInitialData = createAsyncThunk('/api/v1/data', async (authHeader) => {
+export const fetchInitialData = createAsyncThunk('fetchInitialData', async (authHeader) => {
   const { data } = await axios.get(routes.apiGetData(), {
     headers: authHeader,
   });
