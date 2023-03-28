@@ -36,6 +36,17 @@ make build
 make start
 ```
 
+![Chat screenshot](https://imgur.com/6sU7W1f.png)
+
+![Login screenshot](https://imgur.com/BYXEyqP.png)
+
+![SignUp screenshot](https://imgur.com/6lqLlGX.png)
+
+![New channel screenshot](https://imgur.com/s6VzFFT.png)
+
+![Rename channel screenshot](https://imgur.com/2ZsnL5O.png)
+
+![Delete channel screenshot](https://imgur.com/0wpo6Ou.png)
 
 
 
