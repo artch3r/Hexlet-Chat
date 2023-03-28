@@ -1,10 +1,13 @@
 import { useSelector } from 'react-redux';
+import { useRef, useEffect } from 'react';
 import { Col } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import MessageForm from './MessageForm';
 
 const Messages = () => {
   const { t } = useTranslation();
+  const messagesEndRef = useRef();
+
   const activeChannel = useSelector(
     // eslint-disable-next-line max-len
     ({ channelsInfo: { channels, currentChannelId } }) => channels.find((channel) => channel.id === currentChannelId),
@@ -22,6 +25,10 @@ const Messages = () => {
     </div>
   ));
 
+  useEffect(() => {
+    messagesEndRef.current.scrollIntoView({ behaviour: 'smooth' });
+  }, [currentMessages]);
+
   return (
     <Col className="p-0 h-100">
       <div className="d-flex flex-column h-100">
@@ -38,6 +45,7 @@ const Messages = () => {
         </div>
         <div id="messages-box" className="chat-messages overflow-auto px-5">
           {messages.length > 0 ? messagesElements : null}
+          <div ref={messagesEndRef} />
         </div>
         <div className="mt-auto px-5 py-3">
           <MessageForm
