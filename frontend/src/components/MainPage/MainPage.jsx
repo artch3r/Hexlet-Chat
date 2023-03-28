@@ -18,7 +18,9 @@ const MainPage = () => {
     dispatch(fetchInitialData(authHeader));
   }, [dispatch, getAuthHeader]);
 
-  const { loadingStatus, loadingError } = useSelector(({ loading }) => ({ loadingStatus: loading.status, loadingError: loading.error }));
+  const { loadingStatus, loadingError } = useSelector(({ loading }) => (
+    { loadingStatus: loading.status, loadingError: loading.error }
+  ));
 
   if (loadingStatus === 'error') {
     toast.error(t(`toasts.${loadingError.message}`));

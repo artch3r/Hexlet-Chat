@@ -142,7 +142,8 @@ const SignUpForm = () => {
             value="submit"
             variant="outline-primary"
             className="w-100"
-            disabled={isSubmitting || (Object.values(errors).length > 0 && Object.values(touched).length > 0)}
+            disabled={isSubmitting
+              || (Object.values(errors).length > 0 && Object.values(touched).length > 0)}
           >
             {t('signUpPage.register')}
           </Button>
