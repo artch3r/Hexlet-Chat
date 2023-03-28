@@ -33,11 +33,14 @@ const channelsSlice = createSlice({
       }
     },
     changeChannelName(state, { payload }) {
-      const currentChannels = state.channels;
-      const filteredChannels = currentChannels.filter(
-        (channel) => channel.id !== payload.id,
-      );
-      const newChannels = [...filteredChannels, payload];
+      const newChannels = state.channels.map((channel) => {
+        if (channel.id === payload.id) {
+          return payload;
+        }
+
+        return channel;
+      });
+
       state.channels = newChannels;
     },
   },
