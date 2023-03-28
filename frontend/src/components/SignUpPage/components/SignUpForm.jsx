@@ -22,7 +22,7 @@ const SignUpForm = () => {
 
   const validationSchema = yup.object().shape({
     username: yup.string().min(3, 'incorrectUsernameLength').max(20, 'incorrectUsernameLength').required('requiredField'),
-    password: yup.string().min(6, 'incorrectPasswordLength').max(20, 'incorrectPasswordLength').required('requiredField'),
+    password: yup.string().min(6, 'incorrectMinPasswordLength').max(20, 'incorrectMaxPasswordLength').required('requiredField'),
     confirmPassword: yup
       .string()
       .required('requiredField')
