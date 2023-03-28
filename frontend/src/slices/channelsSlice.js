@@ -1,14 +1,6 @@
 /* eslint-disable no-param-reassign */
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import axios from 'axios';
-import routes from '../routes';
-
-export const fetchInitialData = createAsyncThunk('fetchInitialData', async (authHeader) => {
-  const { data } = await axios.get(routes.apiGetData(), {
-    headers: authHeader,
-  });
-  return data;
-});
+import { createSlice } from '@reduxjs/toolkit';
+import { fetchInitialData } from './loadingSlice.js';
 
 const initialState = {
   channels: [],
