@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 import { useAuth } from '../../providers/AuthProvider';
-import routes from '../../../routes';
+import { pageRoutes, apiRoutes } from '../../../routes';
 
 const SignUpForm = () => {
   const { t } = useTranslation();
@@ -41,9 +41,9 @@ const SignUpForm = () => {
         setSignUpFailed(false);
 
         try {
-          const res = await axios.post(routes.apiSignUp(), values);
+          const res = await axios.post(apiRoutes.signUp(), values);
           auth.logIn(res.data);
-          navigate(routes.mainPage());
+          navigate(pageRoutes.mainPage());
         } catch (error) {
           if (error.isAxiosError) {
             if (error.message === 'Network Error') {

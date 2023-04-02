@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next';
 import notFoundImage from '../../images/notFound.svg';
-import routes from '../../routes.js';
+import { pageRoutes } from '../../routes.js';
 
 const NotFoundPage = () => {
   const { t } = useTranslation();
@@ -16,7 +16,7 @@ const NotFoundPage = () => {
       <p className="text-muted">
         {t('notFoundPage.canRedirect')}
         {' '}
-        <a href={routes.mainPage()}>{t('notFoundPage.onMain')}</a>
+        <a href={pageRoutes.mainPage()}>{t('notFoundPage.onMain')}</a>
       </p>
     </div>
   );

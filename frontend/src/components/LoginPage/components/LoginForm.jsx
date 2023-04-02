@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '../../providers/AuthProvider';
-import routes from '../../../routes.js';
+import { pageRoutes, apiRoutes } from '../../../routes.js';
 
 const LoginForm = () => {
   const { t } = useTranslation();
@@ -32,9 +32,9 @@ const LoginForm = () => {
       setAuthFailed(false);
 
       try {
-        const res = await axios.post(routes.apiLogin(), values);
+        const res = await axios.post(apiRoutes.login(), values);
         auth.logIn(res.data);
-        navigate(routes.mainPage());
+        navigate(pageRoutes.mainPage());
       } catch (error) {
         formik.setSubmitting(false);
         console.log('error', error);

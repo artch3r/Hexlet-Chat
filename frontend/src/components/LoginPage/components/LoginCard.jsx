@@ -1,7 +1,7 @@
 import { Card } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import loginImage from '../../../images/login.jpeg';
-import routes from '../../../routes';
+import { pageRoutes } from '../../../routes';
 
 const LoginCard = ({ children }) => {
   const { t } = useTranslation();
@@ -24,7 +24,7 @@ const LoginCard = ({ children }) => {
             {t('loginPage.noAccount')}
             {' '}
           </span>
-          <a href={routes.signUpPage()}>{t('loginPage.registration')}</a>
+          <a href={pageRoutes.signUpPage()}>{t('loginPage.registration')}</a>
         </div>
       </Card.Footer>
     </Card>

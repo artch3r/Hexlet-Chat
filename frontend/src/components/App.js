@@ -14,7 +14,7 @@ import LoginPage from './LoginPage/LoginPage.jsx';
 import NotFoundPage from './NotFoundPage/NotFoundPage.jsx';
 import SignUpPage from './SignUpPage/SignUpPage.jsx';
 import { useAuth } from './providers/AuthProvider.jsx';
-import routes from '../routes.js';
+import { pageRoutes } from '../routes.js';
 
 const LogOutButton = () => {
   const { t } = useTranslation();
@@ -30,13 +30,13 @@ const LogOutButton = () => {
 const PrivateRoute = () => {
   const auth = useAuth();
 
-  return auth.user ? <Outlet /> : <Navigate to={routes.loginPage()} />;
+  return auth.user ? <Outlet /> : <Navigate to={pageRoutes.loginPage()} />;
 };
 
 const PublicRoute = () => {
   const auth = useAuth();
 
-  return auth.user ? <Navigate to={routes.mainPage()} /> : <Outlet />;
+  return auth.user ? <Navigate to={pageRoutes.mainPage()} /> : <Outlet />;
 };
 
 const App = () => {
@@ -49,7 +49,7 @@ const App = () => {
           <BrowserRouter>
             <Navbar expand="lg" bg="white" className="shadow-sm">
               <Container>
-                <Navbar.Brand as={Link} to={routes.mainPage()}>
+                <Navbar.Brand as={Link} to={pageRoutes.mainPage()}>
                   {t('navbar.hexletChat')}
                 </Navbar.Brand>
                 <LogOutButton />
@@ -57,13 +57,13 @@ const App = () => {
             </Navbar>
             <Routes>
               <Route element={<PrivateRoute />}>
-                <Route path={routes.mainPage()} element={<MainPage />} />
+                <Route path={pageRoutes.mainPage()} element={<MainPage />} />
               </Route>
               <Route element={<PublicRoute />}>
-                <Route path={routes.loginPage()} element={<LoginPage />} />
-                <Route path={routes.signUpPage()} element={<SignUpPage />} />
+                <Route path={pageRoutes.loginPage()} element={<LoginPage />} />
+                <Route path={pageRoutes.signUpPage()} element={<SignUpPage />} />
               </Route>
-              <Route path={routes.notFoundPage()} element={<NotFoundPage />} />
+              <Route path={pageRoutes.notFoundPage()} element={<NotFoundPage />} />
             </Routes>
           </BrowserRouter>
           <ToastContainer
