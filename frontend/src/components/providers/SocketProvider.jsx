@@ -37,7 +37,7 @@ const SocketProvider = ({ children, socket }) => {
     dispatch(changeChannelName({ id, changes: { name } }));
   });
 
-  const createSocketMessage = useCallback((event, data, handleResponse) => new Promise((resolve, reject) => {
+  const createSocketMessage = useCallback((event, data, handleResponse = null) => new Promise((resolve, reject) => {
     socket.timeout(5000).volatile.emit(event, data, (err, response) => {
       if (err) {
         reject(err);
