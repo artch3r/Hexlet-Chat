@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Container, Row } from 'react-bootstrap';
 import { toast } from 'react-toastify';
 import { useTranslation } from 'react-i18next';
-import { fetchInitialData } from '../../slices/loadingSlice.js';
+import { fetchInitialData, selectLoadingInfo } from '../../slices/loadingSlice.js';
 import { useAuth } from '../providers/AuthProvider.jsx';
 import Channels from './components/Channels.jsx';
 import Messages from './components/Messages.jsx';
@@ -18,15 +18,13 @@ const MainPage = () => {
     dispatch(fetchInitialData(authHeader));
   }, [dispatch, getAuthHeader]);
 
-  const { loadingStatus, loadingError } = useSelector(({ loading }) => (
-    { loadingStatus: loading.status, loadingError: loading.error }
-  ));
+  const { status, error } = useSelector(selectLoadingInfo);
 
-  if (loadingStatus === 'error') {
-    toast.error(t(`toasts.${loadingError.message}`));
+  if (status === 'error') {
+    toast.error(t(`toasts.${error.message}`));
   }
 
-  return loadingStatus === 'finished'
+  return status === 'finished'
     ? (
       <Container className="h-100 my-4 overflow-hidden rounded shadow">
         <Row className="h-100 bg-white flex-md-row">

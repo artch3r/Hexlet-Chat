@@ -1,5 +1,7 @@
 /* eslint-disable no-param-reassign */
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import {
+  createSlice, createAsyncThunk, createEntityAdapter, createSelector,
+} from '@reduxjs/toolkit';
 import axios from 'axios';
 import { apiRoutes } from '../routes';
 
@@ -10,10 +12,12 @@ export const fetchInitialData = createAsyncThunk('fetchInitialData', async (auth
   return data;
 });
 
-const initialState = {
+const loadingAdapter = createEntityAdapter();
+
+const initialState = loadingAdapter.getInitialState({
   status: 'idle',
   error: null,
-};
+});
 
 const loadingSlice = createSlice({
   name: 'loading',
@@ -34,5 +38,9 @@ const loadingSlice = createSlice({
     });
   },
 });
+
+const selectLoading = (state) => state.loading;
+
+export const selectLoadingInfo = createSelector(selectLoading, ({ status, error }) => ({ status, error }));
 
 export default loadingSlice.reducer;
