@@ -1,17 +1,15 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { Modal } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
-import { closeModal } from '../../../slices/modalSlice';
+import { closeModal, selectModalInfo } from '../../../slices/modalSlice';
 import DeleteConfirmation from './components/DeleteConfirmation';
 import ChannelForm from './components/ChannelForm.jsx';
 
 const ModalForm = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  // eslint-disable-next-line no-shadow
-  const { isOpened, type, extra } = useSelector(({ modal: { isOpened, type, extra } }) => (
-    { isOpened, type, extra }
-  ));
+
+  const { isOpened, type, extra } = useSelector(selectModalInfo);
 
   const modalBodyScheme = {
     addChannel: ChannelForm,
