@@ -7,14 +7,14 @@ import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { useChatApi } from '../../providers/SocketProvider.jsx';
 import { useAuth } from '../../providers/AuthProvider.jsx';
-import { selectCurrentChannel } from '../../../slices/channelsSlice.js';
+import { selectCurrentChannelId } from '../../../slices/channelsSlice.js';
 
 const MessageForm = ({ currentChannel, currentMessages }) => {
   const { t } = useTranslation();
   const inputRef = useRef();
   const chatApi = useChatApi();
   const auth = useAuth();
-  const currentChannelId = useSelector(selectCurrentChannel);
+  const currentChannelId = useSelector(selectCurrentChannelId);
 
   useEffect(() => {
     inputRef.current.focus();
