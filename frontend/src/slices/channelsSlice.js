@@ -16,11 +16,6 @@ const channelsSlice = createSlice({
     },
     addChannel(state, { payload }) {
       state.channels.push(payload);
-
-      const currentUser = JSON.parse(localStorage.getItem('userId')).username;
-      if (currentUser === payload.author) {
-        state.currentChannelId = payload.id;
-      }
     },
     deleteChannel(state, { payload }) {
       const newChannels = state.channels.filter(

@@ -5,9 +5,17 @@ import { useDispatch } from 'react-redux';
 import { addMessage } from '../../slices/messagesSlice';
 import {
   addChannel,
+  setChannel,
   deleteChannel,
   changeChannelName,
 } from '../../slices/channelsSlice';
+import store from '../../slices/index.js';
+
+const handleNewChannelResponse = ({ status, data }) => {
+  if (status === 'ok') {
+    store.dispatch(setChannel(data.id));
+  }
+};
 
 const SocketContext = createContext();
 const SocketProvider = ({ children, socket }) => {
@@ -29,18 +37,23 @@ const SocketProvider = ({ children, socket }) => {
     dispatch(changeChannelName(channel));
   });
 
-  const createSocketMessage = useCallback((event, data) => new Promise((resolve, reject) => {
-    socket.timeout(5000).volatile.emit(event, data, (err) => {
+  const createSocketMessage = useCallback((event, data, handleResponse) => new Promise((resolve, reject) => {
+    socket.timeout(5000).volatile.emit(event, data, (err, response) => {
       if (err) {
         reject(err);
       }
+
+      if (handleResponse) {
+        handleResponse(response);
+      }
+
       resolve();
     });
   }), [socket]);
 
   const chatApi = useMemo(() => ({
     sendMessage: (message) => createSocketMessage('newMessage', message),
-    createChannel: (channel) => createSocketMessage('newChannel', channel),
+    createChannel: (channel) => createSocketMessage('newChannel', channel, handleNewChannelResponse),
     removeChannel: (id) => createSocketMessage('removeChannel', { id }),
     renameChannel: (id, name) => createSocketMessage('renameChannel', { id, name }),
   }), [createSocketMessage]);
