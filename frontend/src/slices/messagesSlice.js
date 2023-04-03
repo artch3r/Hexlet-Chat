@@ -19,9 +19,9 @@ const messagesSlice = createSlice({
       messagesAdapter.addMany(state, messages);
     });
     builder.addCase(deleteChannel, (state, { payload }) => {
-      const { messages } = state;
+      const messages = Object.values(state.entities);
       const messagesIdsToRemove = messages
-        .filter((message) => message.channelId === payload.id)
+        .filter((message) => message.channelId === payload)
         .map((message) => message.id);
       messagesAdapter.removeMany(state, messagesIdsToRemove);
     });
