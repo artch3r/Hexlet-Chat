@@ -1,13 +1,11 @@
 /* eslint-disable no-param-reassign */
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, createEntityAdapter, createSelector } from '@reduxjs/toolkit';
 import { fetchInitialData } from './loadingSlice.js';
 
-const defaultChannel = 1;
+const defaultChannelId = 1;
 
-const initialState = {
-  channels: [],
-  currentChannelId: null,
-};
+const channelsAdapter = createEntityAdapter();
+const initialState = channelsAdapter.getInitialState({ currentChannelId: null });
 
 const channelsSlice = createSlice({
   name: 'channels',
@@ -16,39 +14,40 @@ const channelsSlice = createSlice({
     setChannel(state, { payload }) {
       state.currentChannelId = payload;
     },
-    addChannel(state, { payload }) {
-      state.channels.push(payload);
-    },
-    deleteChannel(state, { payload }) {
-      const newChannels = state.channels.filter(
-        (channel) => channel.id !== payload,
-      );
-      state.channels = newChannels;
+    addChannel: channelsAdapter.addOne,
+    deleteChannel: (state, { payload }) => {
+      channelsAdapter.removeOne(state, payload);
 
       if (state.currentChannelId === payload) {
-        state.currentChannelId = defaultChannel;
+        state.currentChannelId = defaultChannelId;
       }
     },
-    changeChannelName(state, { payload }) {
-      const newChannels = state.channels.map((channel) => {
-        if (channel.id === payload.id) {
-          return payload;
-        }
-
-        return channel;
-      });
-
-      state.channels = newChannels;
-    },
+    changeChannelName: channelsAdapter.updateOne,
   },
   extraReducers: (builder) => {
     builder.addCase(fetchInitialData.fulfilled, (state, { payload }) => {
       const { channels, currentChannelId } = payload;
-      state.channels = channels;
+      channelsAdapter.addMany(state, channels);
       state.currentChannelId = currentChannelId;
     });
   },
 });
+
+const selectChannelsInfo = (state) => state.channelsInfo;
+
+const selectState = (state) => state;
+
+const channelsSelectors = channelsAdapter.getSelectors(selectChannelsInfo);
+
+export const selectCurrentChannelId = createSelector(selectChannelsInfo, (channelsInfo) => channelsInfo.currentChannelId);
+
+export const selectChannels = channelsSelectors.selectAll;
+
+export const selectCurrentChannel = createSelector(
+  selectState,
+  selectCurrentChannelId,
+  (state, currentChannelId) => channelsSelectors.selectById(state, currentChannelId),
+);
 
 export const {
   setChannel, addChannel, deleteChannel, changeChannelName,

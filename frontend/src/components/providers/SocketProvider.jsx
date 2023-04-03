@@ -33,8 +33,8 @@ const SocketProvider = ({ children, socket }) => {
     dispatch(deleteChannel(id));
   });
 
-  socket.on('renameChannel', (channel) => {
-    dispatch(changeChannelName(channel));
+  socket.on('renameChannel', ({ id, name }) => {
+    dispatch(changeChannelName({ id, changes: { name } }));
   });
 
   const createSocketMessage = useCallback((event, data, handleResponse) => new Promise((resolve, reject) => {

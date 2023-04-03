@@ -3,19 +3,17 @@ import { useRef, useEffect } from 'react';
 import { Col } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import MessageForm from './MessageForm';
+import { selectCurrentChannel } from '../../../slices/channelsSlice';
 
 const Messages = () => {
   const { t } = useTranslation();
   const messagesEndRef = useRef();
 
-  const activeChannel = useSelector(
-    // eslint-disable-next-line max-len
-    ({ channelsInfo: { channels, currentChannelId } }) => channels.find((channel) => channel.id === currentChannelId),
-  );
+  const currentChannel = useSelector(selectCurrentChannel);
 
   const messages = useSelector(({ messagesInfo }) => messagesInfo.messages);
   const currentMessages = messages.filter(
-    (message) => message.channelId === activeChannel.id,
+    (message) => message.channelId === currentChannel.id,
   );
   const messagesElements = currentMessages.map((message) => (
     <div key={message.id}>
@@ -36,7 +34,7 @@ const Messages = () => {
           <p className="m-0">
             <b>
               #
-              {activeChannel && activeChannel.name}
+              {currentChannel && currentChannel.name}
             </b>
           </p>
           <span className="text-muted">
@@ -49,7 +47,7 @@ const Messages = () => {
         </div>
         <div className="mt-auto px-5 py-3">
           <MessageForm
-            activeChannel={activeChannel}
+            currentChannel={currentChannel}
             currentMessages={currentMessages}
           />
         </div>

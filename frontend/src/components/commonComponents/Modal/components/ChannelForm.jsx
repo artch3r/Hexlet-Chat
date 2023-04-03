@@ -6,13 +6,13 @@ import * as yup from 'yup';
 import { toast } from 'react-toastify';
 import { useTranslation } from 'react-i18next';
 import { useChatApi } from '../../../providers/SocketProvider';
-import { useAuth } from '../../../providers/AuthProvider.jsx';
+import { selectChannels } from '../../../../slices/channelsSlice';
 
-const handleFormSubmit = (type, onHide, currentChannel, chatApi, t, user) => (
+const handleFormSubmit = (type, onHide, currentChannel, chatApi, t) => (
   ({ name }, { setSubmitting }) => {
     switch (type) {
       case 'addChannel': {
-        const channel = { name, author: user.username };
+        const channel = { name };
         chatApi.createChannel(channel)
           .then(() => {
             toast.success(t('toasts.addChannel'));
@@ -48,13 +48,12 @@ const handleFormSubmit = (type, onHide, currentChannel, chatApi, t, user) => (
 const ChannelForm = ({ onHide, type, extra }) => {
   const { t } = useTranslation();
   const chatApi = useChatApi();
-  const { user } = useAuth();
   const inputRef = useRef();
   useEffect(() => {
     inputRef.current.select();
   });
 
-  const channels = useSelector(({ channelsInfo }) => channelsInfo.channels);
+  const channels = useSelector(selectChannels);
   const channelsNames = channels.map((channel) => channel.name);
   const currentChannel = type === 'renameChannel'
     ? channels.find((channel) => channel.id === extra.channelId)
@@ -73,7 +72,7 @@ const ChannelForm = ({ onHide, type, extra }) => {
         name: currentChannel ? currentChannel.name : '',
       }}
       validationSchema={validationSchema}
-      onSubmit={handleFormSubmit(type, onHide, currentChannel, chatApi, t, user)}
+      onSubmit={handleFormSubmit(type, onHide, currentChannel, chatApi, t)}
     >
       {({
         values, errors, touched, handleChange, handleSubmit, isSubmitting,

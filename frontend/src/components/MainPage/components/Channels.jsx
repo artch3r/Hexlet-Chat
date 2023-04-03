@@ -3,7 +3,7 @@ import {
   Button, ButtonGroup, Dropdown, Nav,
 } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
-import { setChannel } from '../../../slices/channelsSlice';
+import { setChannel, selectCurrentChannelId, selectChannels } from '../../../slices/channelsSlice';
 import ModalForm from '../../commonComponents/Modal/Modal.jsx';
 import { openModal } from '../../../slices/modalSlice';
 
@@ -69,10 +69,8 @@ const renderChannels = (channels, currentChannelId, t) => channels
 const Channels = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const { channels, currentChannelId } = useSelector(({ channelsInfo }) => ({
-    channels: channelsInfo.channels,
-    currentChannelId: channelsInfo.currentChannelId,
-  }));
+  const channels = useSelector(selectChannels);
+  const currentChannelId = useSelector(selectCurrentChannelId);
   const channelsElements = renderChannels(channels, currentChannelId, t);
 
   return (
