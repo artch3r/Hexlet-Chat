@@ -36,6 +36,7 @@ const ru = {
         message_few: '{{count}} сообщения',
         message_many: '{{count}} сообщений',
       },
+      loading: 'Загрузка...',
     },
     notFoundPage: {
       notFound: 'Страница не найдена',
