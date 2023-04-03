@@ -2,6 +2,8 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { fetchInitialData } from './loadingSlice.js';
 
+const defaultChannel = 1;
+
 const initialState = {
   channels: [],
   currentChannelId: null,
@@ -24,7 +26,7 @@ const channelsSlice = createSlice({
       state.channels = newChannels;
 
       if (state.currentChannelId === payload) {
-        state.currentChannelId = 1;
+        state.currentChannelId = defaultChannel;
       }
     },
     changeChannelName(state, { payload }) {
