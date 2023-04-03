@@ -4,17 +4,15 @@ import { Col } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import MessageForm from './MessageForm';
 import { selectCurrentChannel } from '../../../slices/channelsSlice';
+import { selectCurrentMessages } from '../../../slices/messagesSlice';
 
 const Messages = () => {
   const { t } = useTranslation();
   const messagesEndRef = useRef();
 
   const currentChannel = useSelector(selectCurrentChannel);
+  const currentMessages = useSelector(selectCurrentMessages);
 
-  const messages = useSelector(({ messagesInfo }) => messagesInfo.messages);
-  const currentMessages = messages.filter(
-    (message) => message.channelId === currentChannel.id,
-  );
   const messagesElements = currentMessages.map((message) => (
     <div key={message.id}>
       <b>{message.username}</b>
@@ -42,7 +40,7 @@ const Messages = () => {
           </span>
         </div>
         <div id="messages-box" className="chat-messages overflow-auto px-5">
-          {messages.length > 0 ? messagesElements : null}
+          {messagesElements.length > 0 ? messagesElements : null}
           <div ref={messagesEndRef} />
         </div>
         <div className="mt-auto px-5 py-3">
