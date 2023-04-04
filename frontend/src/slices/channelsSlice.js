@@ -39,7 +39,10 @@ const selectState = (state) => state;
 
 const channelsSelectors = channelsAdapter.getSelectors(selectChannelsInfo);
 
-export const selectCurrentChannelId = createSelector(selectChannelsInfo, (channelsInfo) => channelsInfo.currentChannelId);
+export const selectCurrentChannelId = createSelector(
+  selectChannelsInfo,
+  (channelsInfo) => channelsInfo.currentChannelId,
+);
 
 export const selectChannels = channelsSelectors.selectAll;
 

@@ -28,7 +28,10 @@ const modalSlice = createSlice({
 
 const selectModal = (state) => state.modal;
 
-export const selectModalInfo = createSelector(selectModal, ({ isOpened, type, extra }) => ({ isOpened, type, extra }));
+export const selectModalInfo = createSelector(
+  selectModal,
+  ({ isOpened, type, extra }) => ({ isOpened, type, extra }),
+);
 
 export const { openModal, closeModal } = modalSlice.actions;
 

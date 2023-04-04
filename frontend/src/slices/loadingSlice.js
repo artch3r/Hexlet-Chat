@@ -46,7 +46,10 @@ const loadingSlice = createSlice({
 
 const selectLoading = (state) => state.loading;
 
-export const selectLoadingInfo = createSelector(selectLoading, ({ status, error }) => ({ status, error }));
+export const selectLoadingInfo = createSelector(
+  selectLoading,
+  ({ status, error }) => ({ status, error }),
+);
 
 export const { setIdle } = loadingSlice.actions;
 

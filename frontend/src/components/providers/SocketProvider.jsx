@@ -37,19 +37,21 @@ const SocketProvider = ({ children, socket }) => {
     dispatch(changeChannelName({ id, changes: { name } }));
   });
 
-  const createSocketMessage = useCallback((event, data, handleResponse = null) => new Promise((resolve, reject) => {
-    socket.timeout(5000).volatile.emit(event, data, (err, response) => {
-      if (err) {
-        reject(err);
-      }
+  const createSocketMessage = useCallback((event, data, handleResponse = null) => new Promise(
+    (resolve, reject) => {
+      socket.timeout(5000).volatile.emit(event, data, (err, response) => {
+        if (err) {
+          reject(err);
+        }
 
-      if (handleResponse) {
-        handleResponse(response);
-      }
+        if (handleResponse) {
+          handleResponse(response);
+        }
 
-      resolve();
-    });
-  }), [socket]);
+        resolve();
+      });
+    },
+  ), [socket]);
 
   const chatApi = useMemo(() => ({
     sendMessage: (message) => createSocketMessage('newMessage', message),

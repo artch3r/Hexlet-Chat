@@ -37,7 +37,8 @@ const selectMessages = messagesSelectors.selectAll;
 export const selectCurrentMessages = createSelector(
   selectMessages,
   selectCurrentChannelId,
-  (messages, currentChannelId) => messages.filter((message) => message.channelId === currentChannelId),
+  (messages, currentChannelId) => messages
+    .filter((message) => message.channelId === currentChannelId),
 );
 
 export const { addMessage } = messagesSlice.actions;
