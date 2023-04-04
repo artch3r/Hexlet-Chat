@@ -1,10 +1,13 @@
 import {
   createContext, useContext, useState, useMemo, useCallback,
 } from 'react';
+import { useDispatch } from 'react-redux';
+import { setIdle } from '../../slices/loadingSlice';
 
 const AuthContext = createContext({});
 
 const AuthProvider = ({ children }) => {
+  const dispatch = useDispatch();
   const currentUser = JSON.parse(localStorage.getItem('userId'));
   const [user, setUser] = useState(currentUser);
 
@@ -16,7 +19,8 @@ const AuthProvider = ({ children }) => {
   const logOut = useCallback(() => {
     localStorage.removeItem('userId');
     setUser(null);
-  }, []);
+    dispatch(setIdle());
+  }, [dispatch]);
 
   const getAuthHeader = useCallback(() => {
     if (user && user.token) {

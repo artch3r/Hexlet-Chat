@@ -37,7 +37,7 @@ const LoginForm = () => {
         navigate(pageRoutes.mainPage());
       } catch (error) {
         formik.setSubmitting(false);
-        console.log('error', error);
+
         if (error.isAxiosError) {
           if (error.message === 'Network Error') {
             toast.error(t('toasts.networkError'));

@@ -22,15 +22,20 @@ const initialState = loadingAdapter.getInitialState({
 const loadingSlice = createSlice({
   name: 'loading',
   initialState,
-  reducers: {},
+  reducers: {
+    setIdle: (state) => {
+      state.status = 'idle';
+      state.error = null;
+    },
+  },
   extraReducers: (builder) => {
     builder.addCase(fetchInitialData.pending, (state) => {
       state.error = null;
       state.status = 'loading';
     });
     builder.addCase(fetchInitialData.fulfilled, (state) => {
-      state.status = 'finished';
       state.error = null;
+      state.status = 'finished';
     });
     builder.addCase(fetchInitialData.rejected, (state, action) => {
       state.status = 'error';
@@ -42,5 +47,7 @@ const loadingSlice = createSlice({
 const selectLoading = (state) => state.loading;
 
 export const selectLoadingInfo = createSelector(selectLoading, ({ status, error }) => ({ status, error }));
+
+export const { setIdle } = loadingSlice.actions;
 
 export default loadingSlice.reducer;
