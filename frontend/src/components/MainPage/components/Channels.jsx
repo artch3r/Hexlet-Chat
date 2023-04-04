@@ -1,68 +1,16 @@
 import { useSelector, useDispatch } from 'react-redux';
 import {
-  Button, ButtonGroup, Dropdown, Nav,
+  Button, Nav,
 } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
-import { setChannel, selectCurrentChannelId, selectChannels } from '../../../slices/channelsSlice';
 import ModalForm from '../../commonComponents/Modal/Modal.jsx';
-import { openModal } from '../../../slices/modalSlice';
-
-const handleSetChannel = (channel, dispatch) => () => dispatch(setChannel(channel.id));
-
-const handleOpenModal = (extra, type, dispatch) => () => dispatch(openModal({ type, extra }));
-
-const chooseChannelElement = (channel, currentChannelId, dispatch, t) => {
-  const buttonVariant = channel.id === currentChannelId ? 'secondary' : 'light';
-
-  if (channel.removable === false) {
-    return (
-      <Button
-        variant={buttonVariant}
-        className="w-100 rounded-0 text-start"
-        onClick={handleSetChannel(channel, dispatch)}
-      >
-        <span className="me-1">#</span>
-        {channel.name}
-      </Button>
-    );
-  }
-
-  return (
-    <Dropdown as={ButtonGroup} className="w-100">
-      <Button
-        className="w-100 rounded-0 text-start text-truncate"
-        variant={buttonVariant}
-        onClick={handleSetChannel(channel, dispatch)}
-      >
-        <span className="me-1">#</span>
-        {channel.name}
-      </Button>
-      <Dropdown.Toggle split variant={buttonVariant}>
-        <span className="visually-hidden">
-          {t('mainPage.channels.channelManage')}
-        </span>
-      </Dropdown.Toggle>
-      <Dropdown.Menu>
-        <Dropdown.Item
-          onClick={handleOpenModal({ channelId: channel.id }, 'deleteChannel', dispatch)}
-        >
-          {t('mainPage.channels.delete')}
-        </Dropdown.Item>
-        <Dropdown.Item
-          onClick={handleOpenModal({ channelId: channel.id }, 'renameChannel', dispatch)}
-        >
-          {t('mainPage.channels.rename')}
-        </Dropdown.Item>
-      </Dropdown.Menu>
-    </Dropdown>
-  );
-};
+import Channel, { handleOpenModal } from './Channel.jsx';
+import { selectChannels } from '../../../slices/channelsSlice';
 
 const Channels = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const channels = useSelector(selectChannels);
-  const currentChannelId = useSelector(selectCurrentChannelId);
 
   return (
     <>
@@ -94,11 +42,7 @@ const Channels = () => {
           id="channels-box"
           className="flex-column px-2 mb-3 overflow-auto h-100 d-block"
         >
-          {channels.map((channel) => (
-            <Nav.Item as="li" className="w-100" key={channel.id}>
-              {chooseChannelElement(channel, currentChannelId, dispatch, t)}
-            </Nav.Item>
-          ))}
+          {channels.map((channel) => (<Channel key={channel.id} channel={channel} />))}
         </Nav>
       </div>
       <ModalForm />
