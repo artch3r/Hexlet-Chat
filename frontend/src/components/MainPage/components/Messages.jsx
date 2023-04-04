@@ -13,14 +13,6 @@ const Messages = () => {
   const currentChannel = useSelector(selectCurrentChannel);
   const currentMessages = useSelector(selectCurrentMessages);
 
-  const messagesElements = currentMessages.map((message) => (
-    <div key={message.id}>
-      <b>{message.username}</b>
-      {': '}
-      {message.body}
-    </div>
-  ));
-
   useEffect(() => {
     messagesEndRef.current.scrollIntoView({ behaviour: 'smooth' });
   }, [currentMessages]);
@@ -40,7 +32,13 @@ const Messages = () => {
           </span>
         </div>
         <div id="messages-box" className="chat-messages overflow-auto px-5">
-          {messagesElements.length > 0 ? messagesElements : null}
+          {currentMessages.map((message) => (
+            <div key={message.id}>
+              <b>{message.username}</b>
+              {': '}
+              {message.body}
+            </div>
+          ))}
           <div ref={messagesEndRef} />
         </div>
         <div className="mt-auto px-5 py-3">
