@@ -1,6 +1,6 @@
 import CardContainer from '../commonComponents/CardContainer/CardContainer';
-import LoginForm from './components/LoginForm';
 import LoginCard from './components/LoginCard';
+import LoginForm from './components/LoginForm';
 
 const LoginPage = () => (
   <CardContainer>
