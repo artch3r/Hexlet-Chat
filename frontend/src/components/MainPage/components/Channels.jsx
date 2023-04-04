@@ -8,8 +8,9 @@ import ModalForm from '../../commonComponents/Modal/Modal.jsx';
 import { openModal } from '../../../slices/modalSlice';
 
 const chooseChannelElement = (channel, currentChannelId, dispatch, t) => {
+  const buttonVariant = channel.id === currentChannelId ? 'secondary' : 'light';
+
   if (channel.removable === false) {
-    const buttonVariant = channel.id === currentChannelId ? 'secondary' : 'light';
     return (
       <Button
         variant={buttonVariant}
@@ -22,7 +23,6 @@ const chooseChannelElement = (channel, currentChannelId, dispatch, t) => {
     );
   }
 
-  const buttonVariant = channel.id === currentChannelId ? 'secondary' : 'light';
   return (
     <Dropdown as={ButtonGroup} className="w-100">
       <Button
@@ -54,24 +54,11 @@ const chooseChannelElement = (channel, currentChannelId, dispatch, t) => {
   );
 };
 
-const renderChannels = (channels, currentChannelId, t) => channels
-  .map((channel) => {
-    const dispatch = useDispatch();
-    const channelElement = chooseChannelElement(channel, currentChannelId, dispatch, t);
-
-    return (
-      <Nav.Item as="li" className="w-100" key={channel.id}>
-        {channelElement}
-      </Nav.Item>
-    );
-  });
-
 const Channels = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const channels = useSelector(selectChannels);
   const currentChannelId = useSelector(selectCurrentChannelId);
-  const channelsElements = renderChannels(channels, currentChannelId, t);
 
   return (
     <>
@@ -103,7 +90,11 @@ const Channels = () => {
           id="channels-box"
           className="flex-column px-2 mb-3 overflow-auto h-100 d-block"
         >
-          {channelsElements}
+          {channels.map((channel) => (
+            <Nav.Item as="li" className="w-100" key={channel.id}>
+              {chooseChannelElement(channel, currentChannelId, dispatch, t)}
+            </Nav.Item>
+          ))}
         </Nav>
       </div>
       <ModalForm />
