@@ -17,12 +17,11 @@ const ModalForm = () => {
     addChannel: ChannelForm,
     renameChannel: ChannelForm,
     deleteChannel: DeleteConfirmation,
-    null: null,
   };
 
-  const Body = modalBodyScheme[type];
+  const ModalBodyInner = modalBodyScheme[type];
 
-  return (
+  return type && (
     <Modal
       show={isOpened}
       onHide={onHide(dispatch)}
@@ -34,7 +33,7 @@ const ModalForm = () => {
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        {Body && <Body type={type} extra={extra} onHide={onHide(dispatch)} />}
+        <ModalBodyInner type={type} extra={extra} onHide={onHide(dispatch)} />
       </Modal.Body>
     </Modal>
   );
