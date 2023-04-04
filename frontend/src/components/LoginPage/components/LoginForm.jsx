@@ -16,8 +16,8 @@ const LoginForm = () => {
   const navigate = useNavigate();
   const auth = useAuth();
   useEffect(() => {
-    inputRef.current.focus();
-  }, []);
+    inputRef.current.select();
+  }, [authFailed]);
 
   const formik = useFormik({
     initialValues: {
