@@ -7,6 +7,10 @@ import { setChannel, selectCurrentChannelId, selectChannels } from '../../../sli
 import ModalForm from '../../commonComponents/Modal/Modal.jsx';
 import { openModal } from '../../../slices/modalSlice';
 
+const handleSetChannel = (channel, dispatch) => () => dispatch(setChannel(channel.id));
+
+const handleOpenModal = (extra, type, dispatch) => () => dispatch(openModal({ type, extra }));
+
 const chooseChannelElement = (channel, currentChannelId, dispatch, t) => {
   const buttonVariant = channel.id === currentChannelId ? 'secondary' : 'light';
 
@@ -15,7 +19,7 @@ const chooseChannelElement = (channel, currentChannelId, dispatch, t) => {
       <Button
         variant={buttonVariant}
         className="w-100 rounded-0 text-start"
-        onClick={() => dispatch(setChannel(channel.id))}
+        onClick={handleSetChannel(channel, dispatch)}
       >
         <span className="me-1">#</span>
         {channel.name}
@@ -28,7 +32,7 @@ const chooseChannelElement = (channel, currentChannelId, dispatch, t) => {
       <Button
         className="w-100 rounded-0 text-start text-truncate"
         variant={buttonVariant}
-        onClick={() => dispatch(setChannel(channel.id))}
+        onClick={handleSetChannel(channel, dispatch)}
       >
         <span className="me-1">#</span>
         {channel.name}
@@ -40,12 +44,12 @@ const chooseChannelElement = (channel, currentChannelId, dispatch, t) => {
       </Dropdown.Toggle>
       <Dropdown.Menu>
         <Dropdown.Item
-          onClick={() => dispatch(openModal({ type: 'deleteChannel', extra: { channelId: channel.id } }))}
+          onClick={handleOpenModal({ channelId: channel.id }, 'deleteChannel', dispatch)}
         >
           {t('mainPage.channels.delete')}
         </Dropdown.Item>
         <Dropdown.Item
-          onClick={() => dispatch(openModal({ type: 'renameChannel', extra: { channelId: channel.id } }))}
+          onClick={handleOpenModal({ channelId: channel.id }, 'renameChannel', dispatch)}
         >
           {t('mainPage.channels.rename')}
         </Dropdown.Item>
@@ -68,7 +72,7 @@ const Channels = () => {
           <Button
             variant="light"
             className="p-0 text-primary btn-group-vertical"
-            onClick={() => dispatch(openModal({ type: 'addChannel', extra: null }))}
+            onClick={handleOpenModal(null, 'addChannel', dispatch)}
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"

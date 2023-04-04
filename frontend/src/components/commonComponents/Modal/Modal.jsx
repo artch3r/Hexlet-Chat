@@ -5,6 +5,8 @@ import { closeModal, selectModalInfo } from '../../../slices/modalSlice';
 import DeleteConfirmation from './components/DeleteConfirmation';
 import ChannelForm from './components/ChannelForm.jsx';
 
+const onHide = (dispatch) => () => dispatch(closeModal());
+
 const ModalForm = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -20,12 +22,10 @@ const ModalForm = () => {
 
   const Body = modalBodyScheme[type];
 
-  const onHide = () => dispatch(closeModal());
-
   return (
     <Modal
       show={isOpened}
-      onHide={onHide}
+      onHide={onHide(dispatch)}
       centered
     >
       <Modal.Header closeButton>
@@ -34,7 +34,7 @@ const ModalForm = () => {
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        {Body && <Body type={type} extra={extra} onHide={onHide} />}
+        {Body && <Body type={type} extra={extra} onHide={onHide(dispatch)} />}
       </Modal.Body>
     </Modal>
   );
