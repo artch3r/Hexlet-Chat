@@ -9,14 +9,26 @@ import { useTranslation } from 'react-i18next';
 import { useAuth } from '../../providers/AuthProvider';
 import { pageRoutes, apiRoutes } from '../../../routes.js';
 
+const handleChange = (formik, setAuthFailed) => (e) => {
+  setAuthFailed(false);
+  formik.handleChange(e);
+};
+
 const LoginForm = () => {
   const { t } = useTranslation();
   const [authFailed, setAuthFailed] = useState(false);
   const inputRef = useRef();
   const navigate = useNavigate();
   const auth = useAuth();
+
   useEffect(() => {
-    inputRef.current.select();
+    inputRef.current.focus();
+  }, []);
+
+  useEffect(() => {
+    if (authFailed) {
+      inputRef.current.select();
+    }
   }, [authFailed]);
 
   const formik = useFormik({
@@ -25,8 +37,8 @@ const LoginForm = () => {
       password: '',
     },
     validationSchema: yup.object().shape({
-      username: yup.string().required(),
-      password: yup.string().required(),
+      username: yup.string().required('requiredField').trim(),
+      password: yup.string().required('requiredField').trim(),
     }),
     onSubmit: async (values) => {
       setAuthFailed(false);
@@ -70,12 +82,16 @@ const LoginForm = () => {
           placeholder={t('loginPage.nickname')}
           id="username"
           type="login"
-          isInvalid={authFailed}
+          isInvalid={(formik.errors.username && formik.touched.username) || authFailed}
           disabled={formik.isSubmitting}
           ref={inputRef}
-          onChange={formik.handleChange}
+          onChange={handleChange(formik, setAuthFailed)}
+          onBlur={formik.handleBlur}
           value={formik.values.username}
         />
+        <Form.Control.Feedback type="invalid" tooltip>
+          {formik.errors.username && t(`errors.${formik.errors.username}`)}
+        </Form.Control.Feedback>
         <Form.Label htmlFor="username">{t('loginPage.nickname')}</Form.Label>
       </Form.Group>
       <Form.Group className="form-floating mb-4">
@@ -86,14 +102,17 @@ const LoginForm = () => {
           placeholder={t('loginPage.password')}
           id="password"
           type="password"
-          isInvalid={authFailed}
+          isInvalid={(formik.errors.password && formik.touched.password) || authFailed}
           disabled={formik.isSubmitting}
-          onChange={formik.handleChange}
+          onChange={handleChange(formik, setAuthFailed)}
+          onBlur={formik.handleBlur}
           value={formik.values.password}
         />
         <Form.Label htmlFor="password">{t('loginPage.password')}</Form.Label>
-        <Form.Control.Feedback type="invalid">
-          {t('loginPage.incorrectData')}
+        <Form.Control.Feedback type="invalid" tooltip>
+          {formik.errors.password
+            ? t(`errors.${formik.errors.password}`)
+            : t('loginPage.incorrectData')}
         </Form.Control.Feedback>
       </Form.Group>
       <Button
@@ -101,7 +120,7 @@ const LoginForm = () => {
         value="submit"
         variant="outline-primary"
         className="w-100 mb-3"
-        disabled={formik.isSubmitting}
+        disabled={formik.isSubmitting || Object.values(formik.errors).length > 0}
       >
         {t('loginPage.enter')}
       </Button>
