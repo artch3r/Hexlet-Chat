@@ -6,9 +6,9 @@ import { pageRoutes } from '../../../routes';
 const SignUpCard = ({ children }) => {
   const { t } = useTranslation();
 
-  const image = { src: signUpImage, alt: t('signUpPage.registration') };
+  const image = { src: signUpImage, alt: t('signUp.registration') };
 
-  const footer = { text: t('signUpPage.alreadyHave'), hrefText: t('signUpPage.login'), href: pageRoutes.loginPage() };
+  const footer = { text: t('signUp.footerText'), hrefText: t('signUp.footerHrefText'), href: pageRoutes.loginPage() };
 
   return (
     <AuthCard image={image} footer={footer}>

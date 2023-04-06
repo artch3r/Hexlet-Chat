@@ -4,24 +4,26 @@ const ru = {
       hexletChat: 'Hexlet Chat',
       logout: 'Выйти',
     },
-    loginPage: {
-      noAccount: 'Нет аккаунта?',
-      registration: 'Регистрация',
-      enter: 'Войти',
-      nickname: 'Ваш ник',
+    login: {
+      username: 'Ваш ник',
       password: 'Пароль',
-      incorrectData: 'Неверные имя пользователя или пароль',
+      imageAlt: 'Войти',
+      footerText: 'Нет аккаунта?',
+      footerHrefText: 'Регистрация',
+      formTitle: 'Войти',
+      formButton: 'Войти',
     },
-    signUpPage: {
-      registration: 'Регистрация',
+    signUp: {
       username: 'Имя пользователя',
       password: 'Пароль',
       confirmPassword: 'Подтвердите пароль',
-      register: 'Зарегистрироваться',
-      login: 'Войти',
-      alreadyHave: 'Уже есть аккаунт?',
+      imageAlt: 'Регистрация',
+      footerText: 'Уже есть аккаунт?',
+      footerHrefText: 'Войти',
+      formTitle: 'Регистрация',
+      formButton: 'Зарегистрироваться',
     },
-    mainPage: {
+    main: {
       channels: {
         channelManage: 'Управление каналом',
         delete: 'Удалить',
@@ -38,7 +40,7 @@ const ru = {
       },
       loading: 'Загрузка...',
     },
-    notFoundPage: {
+    notFound: {
       notFound: 'Страница не найдена',
       canRedirect: 'Но вы можете перейти',
       onMain: 'на главную страницу',
@@ -54,6 +56,10 @@ const ru = {
       confirm: 'Отправить',
     },
     errors: {
+      authFailed: {
+        login: 'Неверные имя пользователя или пароль',
+        signUp: 'Такой пользователь уже существует',
+      },
       incorrectChannelNameLength: 'От 3 до 20 символов',
       incorrectUsernameLength: 'От 3 до 20 символов',
       incorrectMinPasswordLength: 'Не менее 6 символов',

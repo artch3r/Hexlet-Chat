@@ -40,19 +40,19 @@ const renderChannel = (channel, currentChannelId, dispatch, t) => {
       </Button>
       <Dropdown.Toggle split variant={buttonVariant}>
         <span className="visually-hidden">
-          {t('mainPage.channels.channelManage')}
+          {t('main.channels.channelManage')}
         </span>
       </Dropdown.Toggle>
       <Dropdown.Menu>
         <Dropdown.Item
           onClick={handleOpenModal({ channelId: channel.id }, 'deleteChannel', dispatch)}
         >
-          {t('mainPage.channels.delete')}
+          {t('main.channels.delete')}
         </Dropdown.Item>
         <Dropdown.Item
           onClick={handleOpenModal({ channelId: channel.id }, 'renameChannel', dispatch)}
         >
-          {t('mainPage.channels.rename')}
+          {t('main.channels.rename')}
         </Dropdown.Item>
       </Dropdown.Menu>
     </Dropdown>
