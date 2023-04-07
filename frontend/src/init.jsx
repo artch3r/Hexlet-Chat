@@ -14,8 +14,8 @@ const init = async (socket) => {
 
   await i18n.use(initReactI18next).init({
     resources,
-    lng: 'ru',
-    fallbackLng: 'ru',
+    lng: localStorage.getItem('language') || 'ru',
+    fallbackLng: ['ru', 'en'],
   });
 
   filter.add(filter.getDictionary('ru'));

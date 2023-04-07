@@ -79,6 +79,9 @@ const ru = {
       networkError: 'Ошибка соединения',
       unauthorized: 'Ошибка авторизации',
     },
+    language: {
+      dropdownToggle: 'Язык',
+    },
   },
 };
 
