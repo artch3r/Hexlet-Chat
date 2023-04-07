@@ -28,6 +28,10 @@ const handleFormSubmit = (type, onHide, extra, chatApi, t) => (
       }
 
       case MODAL_TYPES.renameChannel: {
+        if (extra.channelName === name) {
+          onHide();
+          break;
+        }
         chatApi.renameChannel(extra.channelId, name)
           .then(() => {
             toast.success(t('toasts.renameChannel'));
@@ -50,20 +54,23 @@ const ChannelForm = ({ onHide, type, extra }) => {
   const { t } = useTranslation();
   const chatApi = useChatApi();
   const inputRef = useRef();
+
   useEffect(() => {
     inputRef.current.select();
-  });
+  }, [type]);
 
-  const channelsNames = useSelector(selectChannelNames);
+  const channelNames = useSelector(selectChannelNames);
   const channelNameInModal = type === MODAL_TYPES.renameChannel
     ? extra.channelName
     : null;
+  const filteredChannelNames = channelNames
+    .filter((channelName) => channelName !== channelNameInModal);
 
   const validationSchema = yup.object().shape({
     name: yup.string().required('requiredField').trim().lowercase()
       .min(3, 'incorrectChannelNameLength')
       .max(20, 'incorrectChannelNameLength')
-      .notOneOf(channelsNames, 'needUnique'),
+      .notOneOf(filteredChannelNames, 'needUnique'),
   });
 
   return (
@@ -75,27 +82,20 @@ const ChannelForm = ({ onHide, type, extra }) => {
       onSubmit={handleFormSubmit(type, onHide, extra, chatApi, t)}
     >
       {({
-        values, errors, touched, handleChange, handleBlur, handleSubmit, isSubmitting,
-      }) => {
-        if (type === MODAL_TYPES.renameChannel
-          && values.name === channelNameInModal && isSubmitting) {
-          onHide();
-        }
-
-        return (
-          <Form onSubmit={handleSubmit}>
-            <Form.Group>
-              <Form.Control name="name" id="name" className="mb-2" ref={inputRef} value={values.name} onChange={handleChange} onBlur={handleBlur} disabled={isSubmitting} isInvalid={errors.name && touched.name} />
-              <Form.Label htmlFor="name" className="visually-hidden">{t('modal.channelName')}</Form.Label>
-              <Form.Control.Feedback type="invalid">{t(`errors.${errors.name}`)}</Form.Control.Feedback>
-              <div className="d-flex justify-content-end">
-                <Button type="button" variant="secondary" className="me-2" disabled={isSubmitting} onClick={onHide}>{t('modal.cancel')}</Button>
-                <Button type="submit" variant="primary" disabled={isSubmitting}>{t('modal.confirm')}</Button>
-              </div>
-            </Form.Group>
-          </Form>
-        );
-      }}
+        values, errors, handleChange, handleSubmit, isSubmitting,
+      }) => (
+        <Form onSubmit={handleSubmit}>
+          <Form.Group className="position-relative">
+            <Form.Control name="name" id="name" className="mb-2" ref={inputRef} value={values.name} onChange={handleChange} disabled={isSubmitting} isInvalid={errors.name} />
+            <Form.Label htmlFor="name" className="visually-hidden">{t('modal.channelName')}</Form.Label>
+            <Form.Control.Feedback type="invalid" tooltip>{t(`errors.${errors.name}`)}</Form.Control.Feedback>
+          </Form.Group>
+          <div className="d-flex justify-content-end">
+            <Button type="button" variant="secondary" className="me-2" disabled={isSubmitting} onClick={onHide}>{t('modal.cancel')}</Button>
+            <Button type="submit" variant="primary" disabled={isSubmitting}>{t('modal.confirm')}</Button>
+          </div>
+        </Form>
+      )}
     </Formik>
   );
 };
