@@ -6,10 +6,10 @@ import * as yup from 'yup';
 import { toast } from 'react-toastify';
 import { useTranslation } from 'react-i18next';
 import { useChatApi } from '../../../providers/SocketProvider';
-import { selectChannels, selectChannelNames } from '../../../../slices/channelsSlice';
+import { selectChannelNames } from '../../../../slices/channelsSlice';
 import { MODAL_TYPES } from '../../../../slices/modalSlice';
 
-const handleFormSubmit = (type, onHide, currentChannel, chatApi, t) => (
+const handleFormSubmit = (type, onHide, extra, chatApi, t) => (
   ({ name }, { setSubmitting }) => {
     switch (type) {
       case MODAL_TYPES.addChannel: {
@@ -28,7 +28,7 @@ const handleFormSubmit = (type, onHide, currentChannel, chatApi, t) => (
       }
 
       case MODAL_TYPES.renameChannel: {
-        chatApi.renameChannel(currentChannel.id, name)
+        chatApi.renameChannel(extra.channelId, name)
           .then(() => {
             toast.success(t('toasts.renameChannel'));
             onHide();
@@ -54,10 +54,9 @@ const ChannelForm = ({ onHide, type, extra }) => {
     inputRef.current.select();
   });
 
-  const channels = useSelector(selectChannels);
   const channelsNames = useSelector(selectChannelNames);
-  const currentChannel = type === MODAL_TYPES.renameChannel
-    ? channels.find((channel) => channel.id === extra.channelId)
+  const channelNameInModal = type === MODAL_TYPES.renameChannel
+    ? extra.channelName
     : null;
 
   const validationSchema = yup.object().shape({
@@ -70,16 +69,16 @@ const ChannelForm = ({ onHide, type, extra }) => {
   return (
     <Formik
       initialValues={{
-        name: currentChannel ? currentChannel.name : '',
+        name: channelNameInModal ?? '',
       }}
       validationSchema={validationSchema}
-      onSubmit={handleFormSubmit(type, onHide, currentChannel, chatApi, t)}
+      onSubmit={handleFormSubmit(type, onHide, extra, chatApi, t)}
     >
       {({
         values, errors, touched, handleChange, handleBlur, handleSubmit, isSubmitting,
       }) => {
         if (type === MODAL_TYPES.renameChannel
-          && values.name === currentChannel.name && isSubmitting) {
+          && values.name === channelNameInModal && isSubmitting) {
           onHide();
         }
 

@@ -50,7 +50,11 @@ const renderChannel = (channel, currentChannelId, dispatch, t) => {
           {t('main.channels.delete')}
         </Dropdown.Item>
         <Dropdown.Item
-          onClick={handleOpenModal({ channelId: channel.id }, MODAL_TYPES.renameChannel, dispatch)}
+          onClick={handleOpenModal(
+            { channelId: channel.id, channelName: channel.name },
+            MODAL_TYPES.renameChannel,
+            dispatch,
+          )}
         >
           {t('main.channels.rename')}
         </Dropdown.Item>
