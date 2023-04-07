@@ -52,6 +52,11 @@ export const selectCurrentChannel = createSelector(
   (state, currentChannelId) => channelsSelectors.selectById(state, currentChannelId),
 );
 
+export const selectChannelNames = createSelector(
+  selectChannels,
+  (channels) => channels.map((channel) => channel.name),
+);
+
 export const {
   setChannel, addChannel, deleteChannel, changeChannelName,
 } = channelsSlice.actions;

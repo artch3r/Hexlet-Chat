@@ -6,7 +6,7 @@ import * as yup from 'yup';
 import { toast } from 'react-toastify';
 import { useTranslation } from 'react-i18next';
 import { useChatApi } from '../../../providers/SocketProvider';
-import { selectChannels } from '../../../../slices/channelsSlice';
+import { selectChannels, selectChannelNames } from '../../../../slices/channelsSlice';
 import { MODAL_TYPES } from '../../../../slices/modalSlice';
 
 const handleFormSubmit = (type, onHide, currentChannel, chatApi, t) => (
@@ -55,7 +55,7 @@ const ChannelForm = ({ onHide, type, extra }) => {
   });
 
   const channels = useSelector(selectChannels);
-  const channelsNames = channels.map((channel) => channel.name);
+  const channelsNames = useSelector(selectChannelNames);
   const currentChannel = type === MODAL_TYPES.renameChannel
     ? channels.find((channel) => channel.id === extra.channelId)
     : null;
