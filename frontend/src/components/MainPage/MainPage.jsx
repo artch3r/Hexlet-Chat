@@ -4,10 +4,15 @@ import { Container, Row, Button } from 'react-bootstrap';
 import { toast } from 'react-toastify';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
-import { fetchInitialData, selectLoadingInfo } from '../../slices/loadingSlice.js';
+import { fetchInitialData, selectLoadingInfo, MAIN_DATA_LOADING_STATUS } from '../../slices/loadingSlice.js';
 import { useAuth } from '../providers/AuthProvider.jsx';
 import Channels from './components/Channels.jsx';
 import Messages from './components/Messages.jsx';
+
+const ERROR_CODES = {
+  network: 'ERR_NETWORK',
+  unauthorized: 'ERR_BAD_REQUEST',
+};
 
 const handleUpdate = (navigate) => () => {
   navigate(0);
@@ -58,12 +63,12 @@ const MainPage = () => {
 
   const { status, error } = useSelector(selectLoadingInfo);
 
-  if (status === 'error') {
+  if (status === [MAIN_DATA_LOADING_STATUS.error]) {
     switch (error.code) {
-      case 'ERR_NETWORK':
+      case ERROR_CODES.network:
         toast.error(t('toasts.networkError'));
         break;
-      case 'ERR_BAD_REQUEST':
+      case ERROR_CODES.unauthorized:
         toast.error(t('toasts.unauthorized'));
         logOut();
         break;
@@ -73,10 +78,10 @@ const MainPage = () => {
   }
 
   const mainContentScheme = {
-    idle: null,
-    loading: Loading,
-    error: Error,
-    finished: ChatContent,
+    [MAIN_DATA_LOADING_STATUS.idle]: null,
+    [MAIN_DATA_LOADING_STATUS.loading]: Loading,
+    [MAIN_DATA_LOADING_STATUS.error]: Error,
+    [MAIN_DATA_LOADING_STATUS.finished]: ChatContent,
   };
 
   const MainContent = mainContentScheme[status];

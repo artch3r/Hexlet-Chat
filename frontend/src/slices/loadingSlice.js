@@ -5,6 +5,13 @@ import {
 import axios from 'axios';
 import { apiRoutes } from '../routes';
 
+export const MAIN_DATA_LOADING_STATUS = {
+  idle: 'idle',
+  loading: 'loading',
+  finished: 'finished',
+  error: 'error',
+};
+
 export const fetchInitialData = createAsyncThunk('fetchInitialData', async (authHeader) => {
   const { data } = await axios.get(apiRoutes.getData(), {
     headers: authHeader,
@@ -15,7 +22,7 @@ export const fetchInitialData = createAsyncThunk('fetchInitialData', async (auth
 const loadingAdapter = createEntityAdapter();
 
 const initialState = loadingAdapter.getInitialState({
-  status: 'idle',
+  status: MAIN_DATA_LOADING_STATUS.idle,
   error: null,
 });
 
@@ -24,21 +31,21 @@ const loadingSlice = createSlice({
   initialState,
   reducers: {
     setIdle: (state) => {
-      state.status = 'idle';
+      state.status = MAIN_DATA_LOADING_STATUS.idle;
       state.error = null;
     },
   },
   extraReducers: (builder) => {
     builder.addCase(fetchInitialData.pending, (state) => {
       state.error = null;
-      state.status = 'loading';
+      state.status = MAIN_DATA_LOADING_STATUS.loading;
     });
     builder.addCase(fetchInitialData.fulfilled, (state) => {
       state.error = null;
-      state.status = 'finished';
+      state.status = MAIN_DATA_LOADING_STATUS.finished;
     });
     builder.addCase(fetchInitialData.rejected, (state, action) => {
-      state.status = 'error';
+      state.status = MAIN_DATA_LOADING_STATUS.error;
       state.error = action.error;
     });
   },
