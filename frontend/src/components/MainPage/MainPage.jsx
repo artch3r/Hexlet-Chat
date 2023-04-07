@@ -78,7 +78,6 @@ const MainPage = () => {
   }
 
   const mainContentScheme = {
-    [MAIN_DATA_LOADING_STATUS.idle]: null,
     [MAIN_DATA_LOADING_STATUS.loading]: Loading,
     [MAIN_DATA_LOADING_STATUS.error]: Error,
     [MAIN_DATA_LOADING_STATUS.finished]: ChatContent,
@@ -86,7 +85,7 @@ const MainPage = () => {
 
   const MainContent = mainContentScheme[status];
 
-  return MainContent && <MainContent />;
+  return MainContent ? <MainContent /> : null;
 };
 
 export default MainPage;
