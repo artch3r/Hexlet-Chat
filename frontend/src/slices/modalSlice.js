@@ -1,6 +1,12 @@
 /* eslint-disable no-param-reassign */
 import { createSlice, createEntityAdapter, createSelector } from '@reduxjs/toolkit';
 
+export const MODAL_TYPES = {
+  addChannel: 'addChannel',
+  renameChannel: 'renameChannel',
+  deleteChannel: 'deleteChannel',
+};
+
 const modalAdapter = createEntityAdapter();
 
 const initialState = modalAdapter.getInitialState({

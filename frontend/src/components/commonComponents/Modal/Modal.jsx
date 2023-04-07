@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { Modal } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
-import { closeModal, selectModalInfo } from '../../../slices/modalSlice';
+import { closeModal, selectModalInfo, MODAL_TYPES } from '../../../slices/modalSlice';
 import DeleteConfirmation from './components/DeleteConfirmation';
 import ChannelForm from './components/ChannelForm.jsx';
 
@@ -14,9 +14,9 @@ const ModalForm = () => {
   const { isOpened, type, extra } = useSelector(selectModalInfo);
 
   const modalBodyScheme = {
-    addChannel: ChannelForm,
-    renameChannel: ChannelForm,
-    deleteChannel: DeleteConfirmation,
+    [MODAL_TYPES.addChannel]: ChannelForm,
+    [MODAL_TYPES.renameChannel]: ChannelForm,
+    [MODAL_TYPES.deleteChannel]: DeleteConfirmation,
   };
 
   const ModalBodyInner = modalBodyScheme[type];

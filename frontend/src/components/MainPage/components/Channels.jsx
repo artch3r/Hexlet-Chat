@@ -4,6 +4,7 @@ import {
 } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import ModalForm from '../../commonComponents/Modal/Modal.jsx';
+import { MODAL_TYPES } from '../../../slices/modalSlice.js';
 import Channel, { handleOpenModal } from './Channel.jsx';
 import { selectChannels } from '../../../slices/channelsSlice';
 
@@ -20,7 +21,7 @@ const Channels = () => {
           <Button
             variant="light"
             className="p-0 text-primary btn-group-vertical"
-            onClick={handleOpenModal(null, 'addChannel', dispatch)}
+            onClick={handleOpenModal(null, MODAL_TYPES.addChannel, dispatch)}
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"

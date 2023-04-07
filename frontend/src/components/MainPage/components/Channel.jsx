@@ -4,7 +4,7 @@ import {
 import { useSelector, useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { selectCurrentChannelId, setChannel } from '../../../slices/channelsSlice';
-import { openModal } from '../../../slices/modalSlice';
+import { openModal, MODAL_TYPES } from '../../../slices/modalSlice';
 
 export const handleOpenModal = (extra, type, dispatch) => () => (
   dispatch(openModal({ type, extra }))
@@ -45,12 +45,12 @@ const renderChannel = (channel, currentChannelId, dispatch, t) => {
       </Dropdown.Toggle>
       <Dropdown.Menu>
         <Dropdown.Item
-          onClick={handleOpenModal({ channelId: channel.id }, 'deleteChannel', dispatch)}
+          onClick={handleOpenModal({ channelId: channel.id }, MODAL_TYPES.deleteChannel, dispatch)}
         >
           {t('main.channels.delete')}
         </Dropdown.Item>
         <Dropdown.Item
-          onClick={handleOpenModal({ channelId: channel.id }, 'renameChannel', dispatch)}
+          onClick={handleOpenModal({ channelId: channel.id }, MODAL_TYPES.renameChannel, dispatch)}
         >
           {t('main.channels.rename')}
         </Dropdown.Item>

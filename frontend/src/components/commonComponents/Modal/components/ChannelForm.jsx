@@ -7,11 +7,12 @@ import { toast } from 'react-toastify';
 import { useTranslation } from 'react-i18next';
 import { useChatApi } from '../../../providers/SocketProvider';
 import { selectChannels } from '../../../../slices/channelsSlice';
+import { MODAL_TYPES } from '../../../../slices/modalSlice';
 
 const handleFormSubmit = (type, onHide, currentChannel, chatApi, t) => (
   ({ name }, { setSubmitting }) => {
     switch (type) {
-      case 'addChannel': {
+      case MODAL_TYPES.addChannel: {
         const channel = { name };
         chatApi.createChannel(channel)
           .then(() => {
@@ -26,7 +27,7 @@ const handleFormSubmit = (type, onHide, currentChannel, chatApi, t) => (
         break;
       }
 
-      case 'renameChannel': {
+      case MODAL_TYPES.renameChannel: {
         chatApi.renameChannel(currentChannel.id, name)
           .then(() => {
             toast.success(t('toasts.renameChannel'));
@@ -55,7 +56,7 @@ const ChannelForm = ({ onHide, type, extra }) => {
 
   const channels = useSelector(selectChannels);
   const channelsNames = channels.map((channel) => channel.name);
-  const currentChannel = type === 'renameChannel'
+  const currentChannel = type === MODAL_TYPES.renameChannel
     ? channels.find((channel) => channel.id === extra.channelId)
     : null;
 
@@ -77,7 +78,8 @@ const ChannelForm = ({ onHide, type, extra }) => {
       {({
         values, errors, touched, handleChange, handleSubmit, isSubmitting,
       }) => {
-        if (type === 'renameChannel' && values.name === currentChannel.name && isSubmitting) {
+        if (type === MODAL_TYPES.renameChannel
+          && values.name === currentChannel.name && isSubmitting) {
           onHide();
         }
 
