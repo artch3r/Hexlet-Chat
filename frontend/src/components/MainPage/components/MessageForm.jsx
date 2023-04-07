@@ -5,6 +5,7 @@ import { useRef, useEffect } from 'react';
 import { toast } from 'react-toastify';
 import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
+import * as yup from 'yup';
 import { useChatApi } from '../../providers/SocketProvider.jsx';
 import { useAuth } from '../../providers/AuthProvider.jsx';
 import { selectCurrentChannelId } from '../../../slices/channelsSlice.js';
@@ -24,6 +25,9 @@ const MessageForm = ({ currentChannel, currentMessages }) => {
     initialValues: {
       body: '',
     },
+    validationSchema: yup.object().shape({
+      body: yup.string().required().trim(),
+    }),
     onSubmit: ({ body }, { resetForm, setSubmitting }) => {
       const { username } = auth.user;
       const message = {
@@ -43,6 +47,7 @@ const MessageForm = ({ currentChannel, currentMessages }) => {
           setSubmitting(false);
         });
     },
+    validateOnMount: true,
   });
 
   return (
@@ -61,12 +66,13 @@ const MessageForm = ({ currentChannel, currentMessages }) => {
           ref={inputRef}
           value={formik.values.body}
           onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
         />
         <Button
           variant="group-vertical"
           type="submit"
           style={{ border: 'none' }}
-          disabled={formik.isSubmitting || formik.values.body.trim() === ''}
+          disabled={formik.isSubmitting || formik.errors.body}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
