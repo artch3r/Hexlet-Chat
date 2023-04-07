@@ -2,7 +2,7 @@
 import { createSlice, createEntityAdapter, createSelector } from '@reduxjs/toolkit';
 import { fetchInitialData } from './loadingSlice.js';
 
-const defaultChannelId = 1;
+const DEFAULT_CHANNEL_ID = 1;
 
 const channelsAdapter = createEntityAdapter();
 const initialState = channelsAdapter.getInitialState({ currentChannelId: null });
@@ -19,7 +19,7 @@ const channelsSlice = createSlice({
       channelsAdapter.removeOne(state, payload);
 
       if (state.currentChannelId === payload) {
-        state.currentChannelId = defaultChannelId;
+        state.currentChannelId = DEFAULT_CHANNEL_ID;
       }
     },
     changeChannelName: channelsAdapter.updateOne,
