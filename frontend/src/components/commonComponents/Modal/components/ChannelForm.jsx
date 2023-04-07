@@ -76,7 +76,7 @@ const ChannelForm = ({ onHide, type, extra }) => {
       onSubmit={handleFormSubmit(type, onHide, currentChannel, chatApi, t)}
     >
       {({
-        values, errors, touched, handleChange, handleSubmit, isSubmitting,
+        values, errors, touched, handleChange, handleBlur, handleSubmit, isSubmitting,
       }) => {
         if (type === MODAL_TYPES.renameChannel
           && values.name === currentChannel.name && isSubmitting) {
@@ -86,7 +86,7 @@ const ChannelForm = ({ onHide, type, extra }) => {
         return (
           <Form onSubmit={handleSubmit}>
             <Form.Group>
-              <Form.Control name="name" id="name" className="mb-2" ref={inputRef} value={values.name} onChange={handleChange} disabled={isSubmitting} isInvalid={errors.name && touched.name} />
+              <Form.Control name="name" id="name" className="mb-2" ref={inputRef} value={values.name} onChange={handleChange} onBlur={handleBlur} disabled={isSubmitting} isInvalid={errors.name && touched.name} />
               <Form.Label htmlFor="name" className="visually-hidden">{t('modal.channelName')}</Form.Label>
               <Form.Control.Feedback type="invalid">{t(`errors.${errors.name}`)}</Form.Control.Feedback>
               <div className="d-flex justify-content-end">
