@@ -30,7 +30,7 @@ const Loading = () => {
   );
 };
 
-const Error = () => {
+const SomethingWrong = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
 
@@ -79,7 +79,7 @@ const MainPage = () => {
 
   const mainContentScheme = {
     [MAIN_DATA_LOADING_STATUS.loading]: Loading,
-    [MAIN_DATA_LOADING_STATUS.error]: Error,
+    [MAIN_DATA_LOADING_STATUS.error]: SomethingWrong,
     [MAIN_DATA_LOADING_STATUS.finished]: ChatContent,
   };
 
