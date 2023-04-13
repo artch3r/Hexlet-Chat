@@ -63,7 +63,7 @@ const MainPage = () => {
 
   const { status, error } = useSelector(selectLoadingInfo);
 
-  if (status === [MAIN_DATA_LOADING_STATUS.error]) {
+  if (status === MAIN_DATA_LOADING_STATUS.error) {
     switch (error.code) {
       case ERROR_CODES.network:
         toast.error(t('toasts.networkError'));
