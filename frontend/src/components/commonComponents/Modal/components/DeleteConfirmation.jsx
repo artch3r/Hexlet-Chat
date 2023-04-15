@@ -2,7 +2,7 @@ import { Button } from 'react-bootstrap';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
-import { useChatApi } from '../../../providers/SocketProvider';
+import { useChatApi } from '../../../providers/ChatApiProvider';
 
 const handleRemoveChannel = (extra, chatApi, setDisabled, onHide, t) => () => {
   setDisabled(true);

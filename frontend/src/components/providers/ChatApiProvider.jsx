@@ -18,7 +18,8 @@ const handleNewChannelResponse = ({ status, data }) => {
 };
 
 const SocketContext = createContext();
-const SocketProvider = ({ children, socket }) => {
+
+const ChatApiProvider = ({ children, socket }) => {
   const dispatch = useDispatch();
 
   socket.on('newMessage', (message) => {
@@ -69,4 +70,4 @@ const SocketProvider = ({ children, socket }) => {
 
 export const useChatApi = () => useContext(SocketContext);
 
-export default SocketProvider;
+export default ChatApiProvider;

@@ -6,7 +6,7 @@ import { toast } from 'react-toastify';
 import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import * as yup from 'yup';
-import { useChatApi } from '../../providers/SocketProvider.jsx';
+import { useChatApi } from '../../providers/ChatApiProvider.jsx';
 import { useAuth } from '../../providers/AuthProvider.jsx';
 import { selectCurrentChannelId } from '../../../slices/channelsSlice.js';
 

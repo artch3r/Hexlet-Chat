@@ -5,7 +5,7 @@ import { Formik } from 'formik';
 import * as yup from 'yup';
 import { toast } from 'react-toastify';
 import { useTranslation } from 'react-i18next';
-import { useChatApi } from '../../../providers/SocketProvider';
+import { useChatApi } from '../../../providers/ChatApiProvider';
 import { selectChannelNames } from '../../../../slices/channelsSlice';
 import { MODAL_TYPES } from '../../../../slices/modalSlice';
 
