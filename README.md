@@ -36,17 +36,17 @@ make build
 make start
 ```
 
-![Chat screenshot](https://imgur.com/6sU7W1f.png)
+![Chat screenshot](/screenshots/chat.png)
 
-![Login screenshot](https://imgur.com/BYXEyqP.png)
+![Login screenshot](/screenshots/login.png)
 
-![SignUp screenshot](https://imgur.com/6lqLlGX.png)
+![SignUp screenshot](/screenshots/signUp.png)
 
-![New channel screenshot](https://imgur.com/s6VzFFT.png)
+![New channel screenshot](/screenshots/addChannel.png)
 
-![Rename channel screenshot](https://imgur.com/2ZsnL5O.png)
+![Rename channel screenshot](/screenshots/renameChannel.png)
 
-![Delete channel screenshot](https://imgur.com/0wpo6Ou.png)
+![Delete channel screenshot](/screenshots/deleteChannel.png)
 
 
 
