@@ -9,11 +9,6 @@ import { useAuth } from '../providers/AuthProvider.jsx';
 import Channels from './components/Channels.jsx';
 import Messages from './components/Messages.jsx';
 
-const ERROR_CODES = {
-  network: 'ERR_NETWORK',
-  unauthorized: 'ERR_BAD_REQUEST',
-};
-
 const handleUpdate = (navigate) => () => {
   navigate(0);
 };
@@ -64,13 +59,13 @@ const MainPage = () => {
   const { status, error } = useSelector(selectLoadingInfo);
 
   if (status === MAIN_DATA_LOADING_STATUS.error) {
-    switch (error.code) {
-      case ERROR_CODES.network:
-        toast.error(t('toasts.networkError'));
-        break;
-      case ERROR_CODES.unauthorized:
+    switch (error) {
+      case 'authError':
         toast.error(t('toasts.unauthorized'));
         logOut();
+        break;
+      case 'networkError':
+        toast.error(t('toasts.networkError'));
         break;
       default:
         break;

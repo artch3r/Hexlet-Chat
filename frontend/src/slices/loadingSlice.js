@@ -12,11 +12,15 @@ export const MAIN_DATA_LOADING_STATUS = {
   error: 'error',
 };
 
-export const fetchInitialData = createAsyncThunk('fetchInitialData', async (authHeader) => {
-  const { data } = await axios.get(apiRoutes.getData(), {
-    headers: authHeader,
-  });
-  return data;
+export const fetchInitialData = createAsyncThunk('fetchInitialData', async (authHeader, { rejectWithValue }) => {
+  try {
+    const { data } = await axios.get(apiRoutes.getData(), {
+      headers: authHeader,
+    });
+    return data;
+  } catch (e) {
+    return rejectWithValue(e);
+  }
 });
 
 const loadingAdapter = createEntityAdapter();
@@ -46,7 +50,12 @@ const loadingSlice = createSlice({
     });
     builder.addCase(fetchInitialData.rejected, (state, action) => {
       state.status = MAIN_DATA_LOADING_STATUS.error;
-      state.error = action.error;
+      const error = action.payload;
+      if (error.response && error.response.status === 401) {
+        state.error = 'authError';
+      } else {
+        state.error = 'networkError';
+      }
     });
   },
 });
