@@ -10,7 +10,7 @@
 **[Hexlet Chat](https://frontend-project-12-production-640c.up.railway.app/) - simplified version of Slack.**  
 Online chat with registration and authentication. It provides real-time communication.  
 There are 2 default channels *#general* and *#random*. You can create, rename and delete your own channels.  
-Chat filters rude words.
+Chat filters rude words. Language selection is available.
 
 
 
