@@ -72,7 +72,9 @@ const MessageForm = ({ currentChannel, currentMessages }) => {
           variant="group-vertical"
           type="submit"
           style={{ border: 'none' }}
-          disabled={formik.isSubmitting || formik.errors.body}
+          disabled={formik.isSubmitting
+            || formik.errors.body
+            || formik.values.body.trim().length === 0}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
