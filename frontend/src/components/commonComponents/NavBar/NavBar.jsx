@@ -24,6 +24,7 @@ const LogOutButton = () => {
 
 const LanguageSelector = () => {
   const { t, i18n } = useTranslation();
+  const availableLanguages = i18n.languages.sort();
 
   return (
     <Dropdown className="align-content-center justify-content-center">
@@ -31,7 +32,7 @@ const LanguageSelector = () => {
         {t('language.dropdownToggle')}
       </Dropdown.Toggle>
       <Dropdown.Menu>
-        {i18n.languages.map((language) => (
+        {availableLanguages.map((language) => (
           <Dropdown.Item
             onClick={handleChangeLanguage(i18n, language)}
             key={language}
