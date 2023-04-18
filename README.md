@@ -23,11 +23,6 @@ git clone https://github.com/artch3r/frontend-project-12.git
 make install
 ```
 
-### Build
-```
-make build
-```
-
 ### Start
 ```
 make start
