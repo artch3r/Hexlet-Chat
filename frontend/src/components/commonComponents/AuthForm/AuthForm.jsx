@@ -83,7 +83,7 @@ const AuthForm = ({ type, formik, authState }) => {
         value="submit"
         variant="outline-primary"
         className="w-100"
-        disabled={formik.isSubmitting}
+        disabled={formik.isSubmitting || Object.values(formik.errors).length > 0}
       >
         {t(`${type}.formButton`)}
       </Button>

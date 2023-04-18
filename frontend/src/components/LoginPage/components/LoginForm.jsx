@@ -49,6 +49,7 @@ const LoginForm = () => {
         throw error;
       }
     },
+    validateOnMount: true,
   });
 
   return <AuthForm type="login" formik={formik} authState={{ authFailed, setAuthFailed }} />;
